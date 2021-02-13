@@ -1,0 +1,312 @@
+<div class="row">
+    <div class="col-md-12">
+        <nb-card [nbSpinner]="loading" nbSpinnerStatus="primary" nbSpinnerSize="large" nbSpinnerMessage="loading...">
+            <nb-card-header>
+                <div class="row" style="padding-left: 0.85rem;">
+                    <nb-icon icon="book-open-outline" status="success"></nb-icon>
+                    <h6 style="margin-left: 0.4rem;">Frontdesk</h6>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="row show-grid">
+                    <div class="col-md-12">
+                        <nb-form-field>
+                            <input type="text" nbInput fullWidth placeholder="Cari...">
+                            <button nbSuffix nbButton status="primary">
+                                <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                                </nb-icon>
+                            </button>
+                        </nb-form-field>
+                    </div>
+                    <div class="col-md-12" style="max-height: 56px;">
+                        <form class="form-inline">
+                            <nb-form-field>
+                                <nb-icon nbPrefix icon="calendar-outline" pack="eva"></nb-icon>
+                                <input nbInput placeholder="Pilih range tanggal..." name="rangeDate"
+                                    [nbDatepicker]="formpicker" [(ngModel)]="rangeDate">
+                                <nb-rangepicker #formpicker [range]="rangeDate" (rangeChange)="onRangeChange($event)">
+                                </nb-rangepicker>
+                            </nb-form-field>
+                            <button nbButton status="primary" (click)="onRefresh()">
+                                <nb-icon icon="refresh-outline"></nb-icon>Refresh
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-12">
+                        <button data-toggle="modal" data-target="#modalRegisterPasien" type="submit" class="mr-4"
+                            nbButton status="primary" (click)="registerPasien()">
+                            <nb-icon icon="plus-outline"></nb-icon>Register & Admisi 
+                        </button>
+                        <!-- <button type="submit" nbButton status="danger" (click)="admisiKasus()">
+                            <nb-icon icon="plus-outline"></nb-icon>Admisi Kasus
+                        </button> -->
+                        <!-- <button style="margin-left: 1rem" type="submit" nbButton status="info">
+                            <nb-icon icon="edit-outline"></nb-icon>Tanpa Surat
+                        </button> -->
+                    </div>
+                    <div class="table-responsive" style="margin-top: -0.25rem; padding: 0.5rem 0.5rem;">
+                        <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">No. Kasus</th>
+                                    <th scope="col">Pasien</th>
+                                    <th scope="col">Tgl. Masuk</th>
+                                    <th scope="col">Keluhan</th>
+                                    <th scope="col">Klinik</th>
+                                    <th scope="col">Dokter</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of registerKasusList$ | async; let i = index">
+                                    <td>{{i + 1 + (pageSize * (pageNumber - 1))}}</td>
+                                    <td>{{ item.REG_NO }}</td>
+                                    <td>{{ item.PASIEN }}</td>
+                                    <td>{{ item.TGL_MASUK | date:'medium' }}</td>
+                                    <td>{{ item.KELUHAN }}</td>
+                                    <td>{{ item.NAMA_KLINIK }}</td>
+                                    <td>{{ item.DOKTER ? item.DOKTER : '-' }}</td>
+                                    <td><span style="font-size: 0.9rem;"
+                                        [class]="getStatusStyle(item.STATUS_KASUS)">{{ item.STATUS_KASUS == 'Queuing' ? 'Menunggu Giliran' : item.STATUS_KASUS }}</span></td>
+                                    <td class="fit"><a data-toggle="modal" data-target="#modalRegisterPasien" style="margin-right: 5%;"
+                                            class="btn btn-sm btn-primary" (click)="editRegisterKasus(item.REG_NO)">
+                                            <span style="color: #fff; cursor: pointer" class="fa fa-edit"></span>
+                                        </a>
+                                        <a *ngIf="item.STATUS_KASUS.toLowerCase()=='registered'"
+                                         class="btn btn-sm btn-success" (click)="admisiKasus(item.REG_NO)">
+                                            <span style="color: #fff; cursor: pointer" class="fa fa-check"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </nb-card-body>
+            <nb-card-footer>
+                <ngx-pagination (getDataSource)="getRegisterKasusList($event)"></ngx-pagination>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="modalRegisterPasien" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered center" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Register Pasien & Admisi Kasus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <nb-card [nbSpinner]="loadingModal" nbSpinnerStatus="primary" nbSpinnerSize="giant"
+                            nbSpinnerMessage="processing...">
+                            <nb-card-body>
+                                <form #frontdeskForm="ngForm">
+                                    <h5 style="text-align: center;">Informasi Pasien</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Pilih Jenis Pasien</label>
+                                                <span class="field-validation-valid text-danger"> *</span>
+                                                <select required (ngModelChange)="onSelectJenisPasien($event)" [(ngModel)]="jenisPasien" name="jp" class="form-control" id="jenisPasien">
+                                                    <option value="1">Pasien Baru</option>
+                                                    <option value="2">Pasien Lama</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="jenisPasien=='1'">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Nama</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <input required type="text" nbInput fullWidth name="name"
+                                                        placeholder="Nama..." [(ngModel)]="registerKasus.Nama">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Alamat</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <input required type="text" nbInput fullWidth name="alamat"
+                                                        placeholder="Alamat..." [(ngModel)]="registerKasus.Alamat">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Tgl. Lahir</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <input required type="date" nbInput fullWidth name="tgllahir"
+                                                    placeholder="Tanggal Lahir..." [(ngModel)]="registerKasus.TglLahir">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Tempat Lahir</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <input required type="text" nbInput fullWidth name="tempatlahir"
+                                                        placeholder="Tempat Lahir..." [(ngModel)]="registerKasus.TempatLahir">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Email</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <input required type="text" nbInput fullWidth name="email"
+                                                        placeholder="Email..." [(ngModel)]="registerKasus.Email">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Telp</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <input required type="text" nbInput fullWidth name="telp"
+                                                        placeholder="Nomor Telepon..." [(ngModel)]="registerKasus.Telp">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Jenis Kelamin</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <select required [(ngModel)]="registerKasus.JenisKelamin" name="jk" class="form-control" id="jenisKelamin">
+                                                        <option value="L">Pria</option>
+                                                        <option value="P">Wanita</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="jenisPasien=='2'">
+                                        <div class="row">
+                                            <div class="col-md-6"  *ngIf="jenisPasien=='2'">
+                                                <div class="form-group">
+                                                    <label class="label">Pilih Pasien</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <select required (ngModelChange)="onSelectPasien($event)" [(ngModel)]="pasien" name="pasien" class="form-control" id="pasien">
+                                                        <option *ngFor="let item of pasienList" [value]="item.ID_PASIEN">{{ item.NAMA }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Alamat</label>
+                                                    <input readonly type="text" nbInput fullWidth name="alamat"
+                                                        placeholder="Alamat..." [(ngModel)]="registerKasus.Alamat">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Tgl. Lahir</label>
+                                                    <input readonly type="date" nbInput fullWidth name="tgllahir"
+                                                    placeholder="Tanggal Lahir..." [(ngModel)]="registerKasus.TglLahir">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Tempat Lahir</label>
+                                                    <input readonly type="text" nbInput fullWidth name="tempatlahir"
+                                                        placeholder="Tempat Lahir..." [(ngModel)]="registerKasus.TempatLahir">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Email</label>
+                                                    <input readonly type="text" nbInput fullWidth name="email"
+                                                        placeholder="Email..." [(ngModel)]="registerKasus.Email">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Telp</label>
+                                                    <input readonly type="text" nbInput fullWidth name="telp"
+                                                        placeholder="Nomor Telepon..." [(ngModel)]="registerKasus.Telp">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Jenis Kelamin</label>
+                                                    <select readonly [(ngModel)]="registerKasus.JenisKelamin" name="jk" class="form-control" id="jenisKelamin">
+                                                        <option value="L">Pria</option>
+                                                        <option value="P">Wanita</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="jenisPasien">
+                                        <h5 style="text-align: center;" class="mt-2">Informasi Admisi</h5>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="label">Tinggi Badan (cm)</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <input type="number" nbInput fullWidth name="tinggi"
+                                                        placeholder="Tiggi Badan..." [(ngModel)]="registerKasus.TinggiBadan">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="label">Berat Badan (kg)</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <input required type="number" nbInput fullWidth name="berat"
+                                                        placeholder="Berat Badan..." [(ngModel)]="registerKasus.BeratBadan">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="label">Tensi Darah (mmHg)</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <input required type="number" nbInput fullWidth name="tensi"
+                                                        placeholder="Tensi Darah..." [(ngModel)]="registerKasus.TensiDarah">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label">Klinik</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <select required [(ngModel)]="registerKasus.Klinik" name="klinik" class="form-control" id="klinik">
+                                                        <option *ngFor="let item of klinikList" [value]="item.Id">{{ item.Value }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="label">Keluhan</label>
+                                                    <span class="field-validation-valid text-danger"> *</span>
+                                                    <textarea required rows="10" cols="30" [(ngModel)]="registerKasus.Keluhan" name="keluhan" nbInput fullWidth
+                                                      id="keluhan" placeholder="Keluhan..."></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </nb-card-body>
+                            <nb-card-footer>
+                                <button [disabled]="!frontdeskForm.form.valid" nbButton matRipple status="success"
+                                    (click)="saveRegisterPasien()">
+                                    <nb-icon icon="save-outline"></nb-icon>Simpan
+                                </button>
+                                <button style="margin-left: 10px;" *ngIf="registerKasus.RegNo" nbButton matRipple status="danger"
+                                    (click)="delete()">
+                                    <nb-icon icon="trash-2-outline"></nb-icon>Hapus
+                                </button>
+                            </nb-card-footer>
+                        </nb-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

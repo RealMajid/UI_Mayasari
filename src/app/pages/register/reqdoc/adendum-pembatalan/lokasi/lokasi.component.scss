@@ -1,0 +1,17 @@
+@import '../../../../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+  div[class^=col-] {
+       margin-bottom: 1rem;
+  }
+
+  th, td {
+    font-size: .8rem;
+  }
+
+  th {
+    background-color: nb-theme(background-basic-color-2);
+  }
+  
+}

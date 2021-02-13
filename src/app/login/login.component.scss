@@ -1,0 +1,249 @@
+.login-page {
+    width: 100%;
+    height: 100vh;
+    background: radial-gradient(rgb(116, 51, 141), hsl(282, 100%, 22%), rgb(58, 23, 75));
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 20px;
+    top: 20px;
+
+    img {
+        width: 40px;
+    }
+
+    .logo-title {
+        padding-left: 10px;
+        padding-top: 3px;
+
+        h2 {
+            color: #fff;
+            font-size: 1em;
+            font-weight: 500;
+            margin: 0;
+            position: relative;
+        }
+
+        h3 {
+            color: #fff;
+            font-size: 0.9em;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+    }
+}
+
+.logo-djppr {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+
+    img {
+        height: 40px;
+    }
+}
+
+.login-wrapper {
+    background: none;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100%;
+    background-size: 100%;
+    background-position: 25.2rem 0;
+    background-repeat: no-repeat;
+}
+
+.login {
+    background: rgba(255, 255, 255, .04);
+    max-width: 900px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.left-side {
+    position: absolute;
+    bottom: 0;
+
+    img {
+        height: 250px;
+    }
+}
+
+.btn {
+    background: #F7A32F;
+    border-color: #F7A32F;
+    color: #fff;
+}
+
+.title {
+
+    span {
+        font-size: 1.3em;
+        letter-spacing: 2px;
+        line-height: 1.1;
+        font-weight: lighter;
+        color: #fff;
+    }
+}
+
+.signup {
+    font-size: 0.7em !important;
+    text-decoration: none;
+}
+
+
+
+@media screen and (max-width: 576px) {
+    .logo-djppr {
+        display: none;
+    }
+}
+
+.login-wrapper .login {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    padding: 1.2rem 3rem;
+    height: auto;
+    min-height: 100vh;
+    width: 25.2rem;
+}
+
+.login-wrapper .login .title {
+
+    color: black;
+    color: var(--clr-login-title-color, black);
+
+    font-weight: 200;
+    font-weight: var(--clr-login-title-font-weight, 200);
+
+    font-family: Metropolis, "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--clr-login-title-font-family, Metropolis, "Avenir Next", "Helvetica Neue", Arial, sans-serif);
+    font-size: 1.6rem;
+    letter-spacing: normal;
+    line-height: 1.8rem;
+}
+
+.login-wrapper .login .title .welcome {
+    line-height: 1.8rem;
+    letter-spacing: 1px;
+    font-weight: normal;
+    font-size: 22px;
+}
+
+.login-wrapper .login .login-group {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 2.4rem 0 0 0;
+}
+
+.login-wrapper .login .login-group .error {
+    margin: 0.3rem 0 0 0;
+    padding: 0.45rem 0.6rem;
+    /* clr-login-error-background-color */
+    background: #c21d00;
+    background: var(--clr-login-error-background-color, #c21d00);
+    /* clr-login-background-color */
+    color: #fafafa;
+    color: var(--clr-login-background-color, #fafafa);
+    /* clr-login-error-border-radius */
+    border-radius: 0.15rem;
+    border-radius: var(--clr-login-error-border-radius, 0.15rem);
+    line-height: 0.9rem;
+}
+
+.login-wrapper .login .login-group .error:before {
+    display: inline-block;
+    content: "";
+    background: url("data:image/svg+xml;charset=utf8,%3Csvg%20version%3D%221.1%22%20viewBox%3D%225%205%2026%2026%22%20preserveAspectRatio%3D%22xMidYMid%20meet%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%3Cdefs%3E%3Cstyle%3E.clr-i-outline%7Bfill%3A%23fafafa%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctitle%3Eexclamation-circle-line%3C%2Ftitle%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cpath%20class%3D%22clr-i-outline%20clr-i-outline-path-1%22%20d%3D%22M18%2C6A12%2C12%2C0%2C1%2C0%2C30%2C18%2C12%2C12%2C0%2C0%2C0%2C18%2C6Zm0%2C22A10%2C10%2C0%2C1%2C1%2C28%2C18%2C10%2C10%2C0%2C0%2C1%2C18%2C28Z%22%3E%3C%2Fpath%3E%3Cpath%20class%3D%22clr-i-outline%20clr-i-outline-path-2%22%20d%3D%22M18%2C20.07a1.3%2C1.3%2C0%2C0%2C1-1.3-1.3v-6a1.3%2C1.3%2C0%2C1%2C1%2C2.6%2C0v6A1.3%2C1.3%2C0%2C0%2C1%2C18%2C20.07Z%22%3E%3C%2Fpath%3E%3Ccircle%20class%3D%22clr-i-outline%20clr-i-outline-path-3%22%20cx%3D%2217.95%22%20cy%3D%2223.02%22%20r%3D%221.5%22%3E%3C%2Fcircle%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fsvg%3E");
+    margin: 0.05rem 0.3rem 0 0;
+    height: 0.8rem;
+    width: 0.8rem;
+}
+
+.login-wrapper .login .login-group .error.active {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.login-wrapper .login .login-group .error.active:before {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 0.8rem;
+    flex: 0 0 0.8rem;
+}
+
+.login-wrapper .login .login-group .btn {
+    margin: 1rem 0 0 0;
+    max-width: none;
+}
+
+.login-wrapper .login .login-group .error+.btn {
+    margin: 1.2rem 0 0 0;
+}
+
+.login-wrapper .login .login-group .signup {
+    margin-top: 0.6rem;
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+.login-wrapper .login:after {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 0.05rem;
+    height: 100%;
+    /* clr-login-panel-line-color */
+    background: black;
+    background: var(--clr-login-panel-line-color, black);
+    /* clr-login-panel-line-opacity */
+    opacity: 0.1;
+    opacity: var(--clr-login-panel-line-opacity, 0.1);
+    top: 0;
+    right: -0.1rem;
+}
+
+@media screen and (max-width: 3000px) {
+    .login-wrapper {
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+
+    }
+
+    .login-wrapper .login {
+        width: 100%;
+        margin-left: 0;
+        padding: 1.2rem 10%;
+    }
+
+    .login-wrapper .login:after {
+        content: none;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .login-wrapper .login {
+        padding: 1.2rem 15%;
+    }
+}

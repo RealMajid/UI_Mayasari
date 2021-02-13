@@ -1,0 +1,112 @@
+<div class="row">
+    <div class="col-md-12">
+        <nb-form-field>
+            <input name="searchRegister" type="text" nbInput fullWidth placeholder="Cari...">
+            <button nbSuffix nbButton status="primary">
+                <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                </nb-icon>
+            </button>
+        </nb-form-field>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                <thead >
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Tgl. Pemeriksaan</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Pasien</th>
+                        <th scope="col">Dokter</th>
+                        <th scope="col">Klinik</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of monitoringLabCheckupList$ | async; let i = index">
+                        <td>{{i + 1 + (pageSize * (pageNumber - 1))}}</td>
+                        <td>{{ item.ID_ORDER }}</td>
+                        <td>{{ item.TGL_PEMERIKSAAN | date:'medium' }}</td>
+                        <td>{{ item.NAMA }}</td>
+                        <td>{{ item.PASIEN }}</td>
+                        <td>{{ item.DOKTER }}</td>
+                        <td>{{ item.NAMA_KLINIK }}</td>
+                        <td>
+                            <a data-toggle="modal" data-target="#exampleModalLong" (click)="getRekamMedisByIdPemeriksaan(item.ID_PEMERIKSAAN)" class="btn btn-sm btn-info" title="View Detail">
+                                <span style="color: #fff; cursor: pointer;" class="fa fa-eye"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <ngx-pagination (getDataSource)="getMonitoringLabCheckupList($event)"></ngx-pagination>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="modalOrderMedis" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content"> 
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Rekam Medis Untuk Lab</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <nb-card [nbSpinner]="loadingModal" nbSpinnerStatus="primary" nbSpinnerSize="giant"
+                            nbSpinnerMessage="processing...">
+                            <nb-card-body>
+                                <form #orderMedisForm="ngForm">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label">Gejala</label>
+                                                <textarea disabled rows="10" cols="30" [(ngModel)]="rekamMedis.GEJALA" name="gejala" nbInput fullWidth
+                                                  id="gejala" placeholder="Gejala..."></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label">Diagnosa</label>
+                                                <textarea disabled rows="10" cols="30" [(ngModel)]="rekamMedis.DIAGNOSA" name="diagnosa" nbInput fullWidth
+                                                  id="diagnosa" placeholder="Diagnosa..."></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label">Tindakan</label>
+                                                <textarea disabled rows="10" cols="30" [(ngModel)]="rekamMedis.TINDAKAN" name="tindakan" nbInput fullWidth
+                                                  id="tindakan" placeholder="Tindakan..."></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label">Hasil Tes Lab</label>
+                                                <span class="field-validation-valid text-danger"> *</span>
+                                                <textarea required rows="10" cols="30" [(ngModel)]="rekamMedis.HASIL_TEST_LAB" name="hasil" nbInput fullWidth
+                                                  id="hasil" placeholder="Hasil Tes..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </nb-card-body>
+                            <nb-card-footer>
+                                <!-- <button [disabled]="!orderMedisForm.form.valid" nbButton matRipple status="success"
+                                    (click)="saveRekamMedis()">
+                                    <nb-icon icon="save-outline"></nb-icon>Simpan
+                                </button> -->
+                            </nb-card-footer>
+                        </nb-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

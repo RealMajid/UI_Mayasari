@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card">
+      <nb-card-header>
+        <div class="row" style="padding-left: 0.85rem;">
+          <div style="padding-top: 5px;" class="row col-auto mr-auto">
+            <nb-icon icon="archive-outline" status="success"></nb-icon>
+            <h6 style="margin-left: 0.4rem;">{{ pageTitle }} Hibah</h6>
+          </div>
+          <button style="padding: 0;" class="btn btn-light" [routerLink]="['..']">
+            <nb-icon icon="arrow-ios-back-outline" status="primary" routerLinkActive="router-link-active"></nb-icon>
+            Kembali
+          </button>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="searchForm" class="form-inline">
+          <nb-form-field fullWidth>
+            <nb-icon nbPrefix icon="search-outline" pack="eva"></nb-icon>
+            <input id="search" placeholder="Cari..." (click)="openDropDown()" formControlName="search" type="text"
+              nbInput fullWidth />
+          </nb-form-field>
+        </form>
+        <!-- <div clickOutside (clickOutside)="closeDropDown()">
+                    <div *ngIf="showDropDown" class='search-drop-down '>
+                        <div class='search-results' *ngFor="let s of items">
+                            <a [innerHTML]="s | letterBold: getSearchValue()">
+                                   {{s}}
+                            </a>
+                        </div>
+                    </div>
+                </div> -->
+        <div class="card-deck">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 container_foto"
+            *ngFor="let item of items | searchFilter: getSearchValue()" (click)="onGoToMateriDetail(item)">
+            <div class="ver_mas text-center">
+              <span class="fa fa-eye"></span>
+            </div>
+            <article class="text-left">
+              <h2>{{ item.title }}</h2>
+              <h4>{{ item.description }}</h4>
+            </article>
+            <img src="https://img-aws.ehowcdn.com/400x400/ds-img.studiod.com/Half_Dome_from_Glacier_Point0_1.jpg"
+              alt="">
+          </div>
+          <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 container_foto">
+            <div class="ver_mas text-center">
+              <span id="click" class="fa fa-eye"></span>
+            </div>
+            <article class="text-left">
+              <h2>TÍTULO DE <br>LA IMAGEN</h2>
+              <h4>Descripción corta de la imagen en cuestión</h4>
+            </article>
+            <img src="https://pbs.twimg.com/profile_images/781518570018648065/HcvZhTVn_400x400.jpg" alt="">
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 container_foto">
+            <div class="ver_mas text-center">
+              <span class="fa fa-eye"></span>
+            </div>
+            <article class="text-left">
+              <h2>TÍTULO DE <br>LA IMAGEN</h2>
+              <h4>Descripción corta de la imagen en cuestión</h4>
+            </article>
+            <img src="https://ericrenardphotography.com/wp-content/uploads/Yosemite_Valley_2861-1-400x400.jpg" alt="">
+          </div> -->
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

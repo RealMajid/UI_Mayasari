@@ -1,0 +1,153 @@
+<div class="row">
+    <!-- <div class="col-md-12">
+        <nb-form-field>
+            <input type="text" nbInput fullWidth placeholder="Cari...">
+            <button nbSuffix nbButton status="primary">
+                <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                </nb-icon>
+            </button>
+        </nb-form-field>
+    </div> -->
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">No</th>
+                        <th>Dokumen</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">1</td>
+                        <td class="text-left">Surat Pengantar</td>
+                        <td>
+                            <button (click)="download(suratPengantar)" *ngIf="suratPengantar" style="margin-right:2%" class="btn btn-danger btn-sm pull-right" title="download">
+                                <i class="fa fa-file-pdf"></i>
+                            </button>
+                            <button (click)="onUploadDocument(1)" *ngIf="sentToKanwil!='Y' && !suratPengantar" style="margin-right:2%" class="btn btn-info btn-sm pull-right" title="upload">
+                                <i class="fa fa-file-upload"></i>
+                            </button>
+                            <button (click)="deleteFile(suratPengantar.doc_id);suratPengantar=null" *ngIf="suratPengantar" style="margin-right:2%" class="btn btn-danger btn-sm pull-right" title="delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">2</td>
+                        <td class="text-left">Ringkasan Hibah</td>
+                        <td>
+                            <button (click)="download(ringkasanHibah)" *ngIf="ringkasanHibah" style="margin-right:2%" class="btn btn-danger btn-sm pull-right" title="download">
+                                <i class="fa fa-file-pdf"></i>
+                            </button>
+                            <button (click)="onUploadDocument(2)" *ngIf="sentToKanwil!='Y' && !ringkasanHibah" style="margin-right:2%" class="btn btn-info btn-sm pull-right" title="upload">
+                                <i class="fa fa-file-upload"></i>
+                            </button>
+                            <button (click)="deleteFile(ringkasanHibah.doc_id);ringkasanHibah=null" *ngIf="ringkasanHibah" style="margin-right:2%" class="btn btn-danger btn-sm pull-right" title="delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">3</td>
+                        <td class="text-left">(Asli/salinan yang telah dilegalisir) Naskah Perjanjian Hibah/Dokumen yang Dipersamakan</td>
+                        <td>
+                            <button (click)="download(ringkasanHibahLegalisir)" *ngIf="ringkasanHibahLegalisir" style="margin-right:2%" class="btn btn-danger btn-sm pull-right" title="download">
+                                <i class="fa fa-file-pdf"></i>
+                            </button>
+                            <button (click)="onUploadDocument(3)" *ngIf="sentToKanwil!='Y' && !ringkasanHibahLegalisir" style="margin-right:2%" class="btn btn-info btn-sm pull-right" title="upload">
+                                <i class="fa fa-file-upload"></i>
+                            </button>
+                            <button (click)="deleteFile(ringkasanHibahLegalisir.doc_id);ringkasanHibahLegalisir=null" *ngIf="ringkasanHibahLegalisir" style="margin-right:2%" class="btn btn-danger btn-sm pull-right" title="delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">4</td>
+                        <td class="text-left">(Asli/salinan yang telah dilegalisir) Dokumen Pendelegasian Kewenangan Penandatanganan Perjanjian Hibah/Dokumen yang Dipersamakan</td>
+                        <td>
+                            <button (click)="download(dokPendelegasianWewenang)" *ngIf="dokPendelegasianWewenang" style="margin-right:2%" class="btn btn-danger btn-sm pull-right" title="download">
+                                <i class="fa fa-file-pdf"></i>
+                            </button>
+                            <button (click)="onUploadDocument(4)" *ngIf="sentToKanwil!='Y' && !dokPendelegasianWewenang" style="margin-right:2%" class="btn btn-info btn-sm pull-right" title="upload">
+                                <i class="fa fa-file-upload"></i>
+                            </button>
+                            <button (click)="deleteFile(dokPendelegasianWewenang.doc_id);dokPendelegasianWewenang=null" *ngIf="dokPendelegasianWewenang" style="margin-right:2%" class="btn btn-danger btn-sm pull-right" title="delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="padding: 0;" class="col-md-12">
+            <button *ngIf="sentToKanwil!='Y'" (click)="toggle()" type="submit" nbButton status="primary">
+                <nb-icon icon="cloud-upload-outline"></nb-icon>Unggah File
+            </button>
+        </div>
+        <nb-accordion>
+            <nb-accordion-item #item>
+                <nb-accordion-item-body style="padding: 0;">
+                    <div class="row">
+                        <div class="col-md-12" style="margin-bottom: 0;">
+                            <nb-card>
+                                <nb-card-header>Pilih File</nb-card-header>
+                                <nb-card-body>
+                                    <form>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" #file (change)="onChange(file.files)"
+                                                    class="custom-file-input" id="validatedInputGroupCustomFile"
+                                                    required>
+                                                <label class="custom-file-label"
+                                                    for="validatedInputGroupCustomFile">{{ displayNameFile ? displayNameFile : "Choose file..." }}</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <button style="height: 37px;" (click)="uploadFile(file.files)"
+                                                    type="submit" nbButton status="info">
+                                                    <nb-icon icon="cloud-upload-outline"></nb-icon>Upload
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <nb-progress-bar *ngIf="uploadingFile" [value]="progress" [status]="status"
+                                            [displayValue]="true"></nb-progress-bar>
+                                    </form>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </div>
+                </nb-accordion-item-body>
+            </nb-accordion-item>
+        </nb-accordion>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                <thead>
+                    <tr>
+                        <th style="width: 4%;" scope="col">No</th>
+                        <th scope="col">Nama Dokumen</th>
+                        <th style="width: 10%;" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of relatedFileList$ | async; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.doc_name }}</td>
+                        <td>
+                            <a style="margin-right: 16%;" (click)="download(item)" class="btn btn-sm btn-info">
+                                <span style="color: #fff; cursor: pointer;" class="fa fa-download"></span>
+                            </a>
+                            <a (click)="deleteFile(item.doc_id)" class="btn btn-sm btn-danger">
+                                <span style="color: #fff; cursor: pointer;" class="fa fa-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <ngx-pagination (getDataSource)="getFilePendukungList($event)"></ngx-pagination>
+        </div>
+    </div>
+</div>

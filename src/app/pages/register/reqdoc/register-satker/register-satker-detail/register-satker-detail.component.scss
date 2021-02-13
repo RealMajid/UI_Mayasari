@@ -1,0 +1,44 @@
+@import '../../../../../@theme/styles/themes';
+
+@include nb-install-component() {
+ 
+    input:disabled { 
+        color: nb-theme(text-basic-color);
+    }
+}
+
+span.field-validation-valid {
+    font-size: 12px;
+    margin-left: .2rem;
+}
+
+.col-md-6 nb-icon, .col-md-6 h6 {
+    float: left;
+}
+
+.col-md-6 h6 {
+    margin-left: .4rem;
+}
+
+.breadcrumb {
+    margin: 0;
+    padding: 0;
+    background-color: inherit;
+}
+
+nav {
+    float: right;
+}
+
+nav ol li a {
+    text-decoration: none;
+}
+
+.form-group nb-card {
+    margin-bottom: 0;
+    border: 0;
+}
+
+.ng-autocomplete {
+    width: auto;
+}

@@ -1,0 +1,43 @@
+<div class="row">
+    <!-- <div class="col-md-12 col-lg-12">
+        <nb-card>
+            <nb-card-body>
+                <nb-route-tabset fullWidth [tabs]="tabs"></nb-route-tabset>
+            </nb-card-body>
+        </nb-card>
+    </div> -->
+
+    <div class="col-12">
+        <nb-card>
+            <nb-card-header>
+                <div class="row">
+                    <div class="col-md-6">
+                        <nb-icon icon="person-outline" status="success"></nb-icon>
+                        <h6>Dokter</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                              <li class="breadcrumb-item"><a routerLink="../..">Home</a></li>
+                              <li class="breadcrumb-item active" aria-current="page">{{ tabTitle }}</li>
+                            </ol>
+                          </nav>
+                    </div>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <nb-tabset (changeTab)="onChangeTab($event)" fullWidth>
+                    <nb-tab [nbSpinner]="loadingRekamMedis" nbSpinnerStatus="primary" nbSpinnerSize="giant" [active]="tab=='medis'" tabIcon="file-text-outline" tabTitle="Rekam Medis" responsive>
+                        <ngx-rekam-medis></ngx-rekam-medis>
+                    </nb-tab>
+                    <nb-tab [active]="tab=='order'" tabIcon="checkmark-circle-outline" tabTitle="Order Medis" responsive>
+                        <ngx-order-medis></ngx-order-medis>
+                    </nb-tab>
+                    <nb-tab [active]="tab=='komunikasi'" tabIcon="smiling-face-outline" tabTitle="Komunikasi Pasien" responsive>
+                        <ngx-komunikasi-pasien></ngx-komunikasi-pasien>
+                    </nb-tab>
+                </nb-tabset>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

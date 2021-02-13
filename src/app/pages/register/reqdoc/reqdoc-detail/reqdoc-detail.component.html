@@ -1,0 +1,43 @@
+<div class="row">
+    <!-- <div class="col-md-12 col-lg-12">
+        <nb-card>
+            <nb-card-body>
+                <nb-route-tabset fullWidth [tabs]="tabs"></nb-route-tabset>
+            </nb-card-body>
+        </nb-card>
+    </div> -->
+
+    <div class="col-12">
+        <nb-card>
+            <nb-card-header>
+                <div class="row">
+                    <div class="col-md-6">
+                        <nb-icon icon="file-outline" status="success"></nb-icon>
+                        <h6>Dokumen Permohonan</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                              <li class="breadcrumb-item"><a routerLink="../..">Home</a></li>
+                              <li class="breadcrumb-item active" aria-current="page">{{ tabTitle }}</li>
+                            </ol>
+                          </nav>
+                    </div>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <nb-tabset (changeTab)="onChangeTab($event)" fullWidth>
+                    <nb-tab [nbSpinner]="loadingDocument" nbSpinnerStatus="primary" nbSpinnerSize="giant" [active]="tab=='surat'" tabIcon="diagonal-arrow-right-up-outline" tabTitle="Dokumen Permohonan" responsive>
+                        <ngx-document (reqDocLoaded)="onReqDocLoaded($event)" (loadDocument)="onLoadDocument($event)"></ngx-document>
+                    </nb-tab>
+                    <nb-tab *ngIf="id>0" [nbSpinner]="loadingRegister" nbSpinnerStatus="primary" nbSpinnerSize="giant" [active]="tab=='register'" tabIcon="edit-2-outline" tabTitle="Register" responsive>
+                        <ngx-register-satker [sentToKanwil]="sentToKanwil" (loadRegister)="onLoadRegister($event)"></ngx-register-satker>
+                    </nb-tab>
+                    <nb-tab *ngIf="id>0" [active]="tab=='file'" tabIcon="file-outline" tabTitle="File Pendukung" responsive>
+                        <ngx-related-files [sentToKanwil]="sentToKanwil" ></ngx-related-files>
+                    </nb-tab>
+                </nb-tabset>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

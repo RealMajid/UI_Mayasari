@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-md-12">
+        <nb-card>
+            <nb-card-header>Rekam Lokasi</nb-card-header>
+            <nb-card-body>
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fax" class="label">Provinsi</label>
+                                <span *ngIf="!selectedLokasi" class="field-validation-valid text-danger">*</span>
+                                <ng-autocomplete [data]="lokasiList" [searchKeyword]="'value'"
+                                    placeHolder="Pilih Provinsi" name="lokasi" [(ngModel)]="selectedLokasi"
+                                    [initialValue]="" (selected)="selectEvent($event, 'lokasi')"
+                                    (inputChanged)="onChangeSearch($event, 'lokasi')"
+                                    [isLoading]="loadingProvinsi"
+                                    [disabled]="loadingProvinsi"
+                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                </ng-autocomplete>
+
+                                <ng-template #itemTemplate let-item>
+                                    <a [innerHTML]="item.value"></a>
+                                </ng-template>
+
+                                <ng-template #notFoundTemplate let-notFound>
+                                    <div [innerHTML]="notFound"></div>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fax" class="label">Kabupaten/Kota</label>
+                                <span  *ngIf="!selectedKabKota" class="field-validation-valid text-danger">*</span>
+                                <ng-autocomplete [data]="kabupatenKotaList" [searchKeyword]="'value'"
+                                    placeHolder="Pilih Kabupaten/Kota" name="kabkot" [(ngModel)]="selectedKabKota"
+                                    [initialValue]="" (selected)="selectEvent($event, 'kabkot')"
+                                    (inputChanged)="onChangeSearch($event, 'kabkot')"
+                                    [isLoading]="loadingKabKota"
+                                    [disabled]="loadingKabKota"
+                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                </ng-autocomplete>
+
+                                <ng-template #itemTemplate let-item>
+                                    <a [innerHTML]="item.value"></a>
+                                </ng-template>
+
+                                <ng-template #notFoundTemplate let-notFound>
+                                    <div [innerHTML]="notFound"></div>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </nb-card-body>
+            <nb-card-footer>
+                <button class="cancel" nbButton matRipple status="danger" (click)="cancel()">Batal</button>
+                <button nbButton matRipple status="success" (click)="submit()">Simpan</button>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>

@@ -1,0 +1,161 @@
+<div class="card">
+    <h5 class="card-header">Profil Pasien</h5>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Status Antrian</th>
+                            <td>:</td>
+                            <td><h6 class="text-success">{{ historyMedis.STATUS_TUNGGU }}</h6></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Pasien ID</th>
+                            <td>:</td>
+                            <td><h6>{{ historyMedis.ID_PASIEN }}</h6></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nama Pasien</th>
+                            <td>:</td>
+                            <td><h6>{{ historyMedis.PASIEN }}</h6></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Keluhan</th>
+                            <td>:</td>
+                            <td><h6>{{ historyMedis.KELUHAN }}</h6></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mt-4">
+    <h5 class="card-header">Order Medis</h5>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <nb-form-field>
+                    <input name="searchRegister" type="text" nbInput fullWidth placeholder="Cari...">
+                    <button nbSuffix nbButton status="primary">
+                        <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+                </nb-form-field>
+            </div>
+            <div class="col-md-12">
+                <button (click)="newOrderMedis()" data-toggle="modal" data-target="#modalOrderMedis" type="submit" type="submit" nbButton status="primary">
+                    <nb-icon icon="plus-outline"></nb-icon>Order Medis
+                </button>
+            </div>
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                        <thead >
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Jenis</th>
+                                <th scope="col">Jumlah</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of orderMedisList$ | async; let i = index">
+                                <td>{{i + 1 + (pageSize * (pageNumber - 1))}}</td>
+                                <td>{{ item.JENIS }}</td>
+                                <td>{{ item.NAMA }}</td>
+                                <td>{{ item.JUMLAH }}</td>
+                                <td><a data-toggle="modal" data-target="#modalOrderMedis" (click)="editOrderMedis(item.ID_ORDER)" style="margin-right: 5%;" class="btn btn-sm btn-primary" title="Edit">
+                                        <span style="color: #fff; cursor: pointer;" class="fa fa-edit"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <ngx-pagination (getDataSource)="getOrderMedisList($event)"></ngx-pagination>
+                </div>
+            </div>
+        </div>   
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="modalOrderMedis" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content"> 
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Rekam Order Medis</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <nb-card [nbSpinner]="loadingModal" nbSpinnerStatus="primary" nbSpinnerSize="giant"
+                            nbSpinnerMessage="processing...">
+                            <nb-card-body>
+                                <form #orderMedisForm="ngForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Jenis Order Medis</label>
+                                                <span class="field-validation-valid text-danger"> *</span>
+                                                <select required (ngModelChange)="onSelectedJenis($event)" [(ngModel)]="orderMedis.JenisOrderMedis" name="jenis" class="form-control" id="jenis">
+                                                    <option value="1">Obat</option>
+                                                    <option value="2">Test Lab</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6" *ngIf="orderMedis.JenisOrderMedis=='1'">
+                                            <div class="form-group">
+                                                <label class="label">Jenis Obat</label>
+                                                <span class="field-validation-valid text-danger"> *</span>
+                                                <select required [(ngModel)]="orderMedis.IdObat" name="obat" class="form-control" id="obat">
+                                                    <option *ngFor="let item of obatList" [value]="item.Id">{{ item.Value + ' - (' + item.Name + ')' }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="orderMedis.JenisOrderMedis=='2'">
+                                            <div class="form-group">
+                                                <label class="label">Jenis Test Lab</label>
+                                                <span class="field-validation-valid text-danger"> *</span>
+                                                <select required [(ngModel)]="orderMedis.IdLaborat" name="lab" class="form-control" id="lab">
+                                                    <option *ngFor="let item of laboratList" [value]="item.Id">{{ item.Value + ' - (' + item.Name + ')' }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="orderMedis.JenisOrderMedis">
+                                            <div class="form-group">
+                                                <label class="label">Jumlah</label>
+                                                <span class="field-validation-valid text-danger"> *</span>
+                                                <input required type="number" nbInput fullWidth name="jumlah"
+                                                    placeholder="Jumlah" [(ngModel)]="orderMedis.Jumlah">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </nb-card-body>
+                            <nb-card-footer>
+                                <button [disabled]="!orderMedisForm.form.valid" nbButton matRipple status="success"
+                                    (click)="saveOrderMedis()">
+                                    <nb-icon icon="save-outline"></nb-icon>Simpan
+                                </button>
+                                <button style="margin-left: 10px;" *ngIf="orderMedis.IdOrder > 0" nbButton matRipple status="danger"
+                                    (click)="deleteOrderMedis()">
+                                    <nb-icon icon="trash-2-outline"></nb-icon>Hapus
+                                </button>
+                            </nb-card-footer>
+                        </nb-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

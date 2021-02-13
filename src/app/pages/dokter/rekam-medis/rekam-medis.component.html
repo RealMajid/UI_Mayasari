@@ -1,0 +1,68 @@
+<div class="card">
+    <h5 class="card-header">Profil Pasien</h5>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Status Antrian</th>
+                            <td>:</td>
+                            <td><h6 class="text-success">{{ historyMedis.STATUS_TUNGGU }}</h6></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Pasien ID</th>
+                            <td>:</td>
+                            <td><h6>{{ historyMedis.ID_PASIEN }}</h6></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nama Pasien</th>
+                            <td>:</td>
+                            <td><h6>{{ historyMedis.PASIEN }}</h6></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Keluhan</th>
+                            <td>:</td>
+                            <td><h6>{{ historyMedis.KELUHAN }}</h6></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mt-4">
+    <h5 class="card-header">Rekam Medis</h5>
+    <div class="card-body">
+        <form #diagnosaForm="ngForm">
+            <div class="form-group">
+                <label for="alamatPengirimSurat" class="label">Gejala</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <textarea rows="5" cols="30" required [(ngModel)]="rekamMedis.Gejala" id="gejala" nbInput fullWidth name="gejala"
+                    maxlength="500"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="alamatPengirimSurat" class="label">Diagnosa</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <textarea rows="5" cols="30" required [(ngModel)]="rekamMedis.Diagnosa" id="diagnosa" nbInput fullWidth name="diagnosa"
+                    maxlength="500"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="alamatPengirimSurat" class="label">Tindakan</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <textarea rows="5" cols="30" required [(ngModel)]="rekamMedis.Tindakan" id="tindakan" nbInput fullWidth name="tindakan"
+                    maxlength="500"></textarea>
+            </div>
+            <div style="margin-top: 1rem;" class="form-group">
+                <button (click)="saveRekamMedis()" [disabled]="!diagnosaForm.form.valid" nbSpinnerStatus="success"
+                     type="submit" nbButton status="success">
+                    <nb-icon icon="save-outline"></nb-icon>Simpan
+                </button>
+                <button *ngIf="rekamMedis.IdRekamMedis > 0" [nbSpinner]="loadingDelete" nbSpinnerStatus="danger" (click)="confirmDelete()"
+                    style="margin-left: 1rem" type="submit" nbButton status="danger">
+                    <nb-icon icon="trash-2-outline"></nb-icon>Hapus
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

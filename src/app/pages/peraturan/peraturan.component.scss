@@ -1,0 +1,41 @@
+@import "../../@theme/styles/themes";
+
+@include nb-install-component() {
+    nb-checkbox {
+        margin-bottom: 1rem;
+    }
+    
+    .form-inline [fullWidth] {
+        flex: 1;
+    }
+    
+    .form-inline > * {
+        margin: 0 1.5rem 1.5rem 0;
+    }
+    
+    nb-card.inline-form-card nb-card-body {
+        padding-bottom: 0;
+    }
+    
+    .infinite-cards {
+        nb-card {
+            &.own-scroll {
+                height: 50vh;
+            }
+        }
+    }
+    
+    .list-group {
+        width: 100%;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+    
+    .list-group-item {
+        background-color: nb-theme(background-basic-color-1);
+    }
+    
+}
+

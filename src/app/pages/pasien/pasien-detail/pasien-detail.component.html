@@ -1,0 +1,46 @@
+<div class="row">
+    <!-- <div class="col-md-12 col-lg-12">
+        <nb-card>
+            <nb-card-body>
+                <nb-route-tabset fullWidth [tabs]="tabs"></nb-route-tabset>
+            </nb-card-body>
+        </nb-card>
+    </div> -->
+
+    <div class="col-12">
+        <nb-card>
+            <nb-card-header>
+                <div class="row">
+                    <div class="col-md-6">
+                        <nb-icon icon="person-outline" status="success"></nb-icon>
+                        <h6>Pasien Detail</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                              <li class="breadcrumb-item"><a routerLink="../..">Home</a></li>
+                              <li class="breadcrumb-item active" aria-current="page">{{ tabTitle }}</li>
+                            </ol>
+                          </nav>
+                    </div>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <nb-tabset (changeTab)="onChangeTab($event)" fullWidth>
+                    <nb-tab [nbSpinner]="loadingStatusTunggu" nbSpinnerStatus="primary" nbSpinnerSize="giant" [active]="tab=='status'" tabIcon="activity-outline" tabTitle="Status Tunggu" responsive>
+                        <ngx-status-tunggu></ngx-status-tunggu>
+                    </nb-tab>
+                    <nb-tab [nbSpinner]="loadingRekamMedis" nbSpinnerStatus="primary" nbSpinnerSize="giant" [active]="tab=='medis'" tabIcon="file-text-outline" tabTitle="Rekam Medis" responsive>
+                        <ngx-rekam-medis></ngx-rekam-medis>
+                    </nb-tab>
+                    <nb-tab [active]="tab=='transaksi'" tabIcon="swap-outline" tabTitle="Histori Transaksi" responsive>
+                        <ngx-histori-transaksi></ngx-histori-transaksi>
+                    </nb-tab>
+                    <nb-tab [active]="tab=='hubdokter'" tabIcon="phone-call-outline" tabTitle="Hubungi Dokter" responsive>
+                        <ngx-hubungi-dokter></ngx-hubungi-dokter>
+                    </nb-tab>
+                </nb-tabset>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

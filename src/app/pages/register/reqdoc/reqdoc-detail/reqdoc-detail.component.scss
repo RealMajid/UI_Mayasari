@@ -1,0 +1,31 @@
+nb-tabset {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+.col-md-6 nb-icon, .col-md-6 h6 {
+    float: left;
+}
+
+.col-md-6 h6 {
+    margin-left: .4rem;
+}
+
+.breadcrumb {
+    margin: 0;
+    padding: 0;
+    background-color: inherit;
+}
+
+nav {
+    float: right;
+}
+
+nav ol li a {
+    text-decoration: none;
+}
+
+nb-tabset nb-tab {
+    padding: 1rem 0rem;
+}

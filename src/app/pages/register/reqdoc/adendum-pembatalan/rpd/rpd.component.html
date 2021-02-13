@@ -1,0 +1,52 @@
+<div class="row">
+    <div *ngIf="step==1 && !isPembatalan" class="col-md-8">
+            <button type="submit" nbButton status="primary" (click)="newRpd()">
+                <nb-icon icon="plus-outline"></nb-icon>Tambah
+            </button>
+    </div>
+    <div class="col-md-4">
+        <label style="float: left; margin-right: 10px; margin-top: 4%;" for="tahunAnggaran" class="label">Pilih Tahun Anggaran :</label>
+        <nb-card>
+            <input [ngModel]="tahunAnggaran" (ngModelChange)="onTahunAnggaranChange($event)"
+                name="tahunAnggaran" nbInput fullWidth type="text" placeholder="Pilih Tahun Anggaran..."
+                [nbAutocomplete]="autoTahunAnggaran" />
+
+            <nb-autocomplete #autoTahunAnggaran (selectedChange)="onSelectionChange($event)">
+                <nb-option *ngFor="let option of filteredTahunAnggaranOptions$ | async" [value]="option">
+                    {{ option }}
+                </nb-option>
+            </nb-autocomplete>
+        </nb-card>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                <thead >
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Bulan</th>
+                        <th scope="col">Amount</th>
+                        <th *ngIf="step==1" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of rpdList$ | async; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.nama_bulan }}</td>
+                        <td>{{ item.amt | number:'1.0-0' }}</td>
+                        <td *ngIf="step==1 && !isPembatalan" style="text-align: center;">
+                            <a style="margin-right: 5%;" (click)="editRpd(item)" class="btn btn-sm btn-primary">
+                                <span style="color: #fff; cursor: pointer;" class="fa fa-edit"></span>
+                            </a>
+                            <a (click)="deleteRpd(item.dr_id)" class="btn btn-sm btn-danger">
+                                <span style="color: #fff; cursor: pointer;" class="fa fa-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

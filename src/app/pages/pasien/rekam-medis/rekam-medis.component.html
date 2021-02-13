@@ -1,0 +1,115 @@
+<form #reqDocForm="ngForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="keluhan" class="label">Keluhan</label>
+                <textarea rows="4" cols="30" [(ngModel)]="historyMedis.KELUHAN" name="keluhan" nbInput fullWidth
+                    id="keluhan" placeholder="Keluhan"></textarea>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="diagnosa" class="label">Gejala</label>
+                <textarea rows="5" cols="30" [(ngModel)]="rekamMedis.Gejala" name="gejala" nbInput fullWidth
+                    id="diagnosa" placeholder="Gejala"></textarea>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="diagnosa" class="label">Diagnosa</label>
+                <textarea rows="5" cols="30" [(ngModel)]="rekamMedis.Diagnosa" name="diagnosa" nbInput fullWidth
+                    id="diagnosa" placeholder="Diagnosa"></textarea>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="diagnosa" class="label">Tindakan</label>
+                <textarea rows="5" cols="30" [(ngModel)]="rekamMedis.Tindakan" name="tindakan" nbInput fullWidth
+                    id="diagnosa" placeholder="Tindakan"></textarea>
+            </div>
+        </div>
+        <div class="col-md-12" *ngIf="rekamMedis.HasilTestLab">
+            <div class="form-group">
+                <label for="hasil" class="label">Tindakan</label>
+                <textarea rows="5" cols="30" [(ngModel)]="rekamMedis.HasilTestLab" name="hasil" nbInput fullWidth
+                    id="hasil" placeholder="Hasil"></textarea>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="form-group" *ngIf="Labs.length>0">
+        <label for="lab" class="label">Lab</label>
+        <table class="table">
+            <tbody>
+                <tr *ngFor="let item of Labs; let i = index">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ item.nama }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div> -->
+    <!-- <div class="form-group" *ngIf="Obats.length>0">
+        <label for="lab" class="label">Obat</label>
+        <table class="table">
+            <tbody>
+                <tr *ngFor="let item of Obats; let i = index">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ item.nama }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div> -->
+</form>
+<ngx-spinner bdColor="rgba(0,0,0,0.3)" size="medium" color="#4269e1" type="ball-atom" [fullScreen]="false">
+    <p style="color: royalblue;"> Loading... </p>
+</ngx-spinner>
+<ng-template #alertTemplate let-data>
+    <nb-card>
+        <nb-card-body>
+            <p>Apakah anda yakin akan menghapus data dokumen permintaan ini?</p>
+            <p>Data terkait <strong>(Register, Perubahan Register, Pembatalan Register, File Pendukung)</strong> yang
+                telah direkam pada dokumen ini akan dihapus</p>
+        </nb-card-body>
+        <nb-card-footer>
+            <button class="cancel" fullWidth nbButton matRipple status="danger"
+                (click)="deleteReqDoc();windowRef.close()">Ya</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+<ng-template #refTemplate let-data>
+    <nb-card [nbSpinner]="loadingWindowRef" nbSpinnerStatus="primary" nbSpinnerSize="giant">
+        <nb-card-body>
+            <nb-form-field>
+                <input nbInput fullWidth type="text" class="form-control" [(ngModel)]="searchRef"
+                    (ngModelChange)="data.refData=searchReference(data.refData, data.type)"
+                    placeholder="Cari {{titleModal}}">
+                <button nbSuffix nbButton status="primary">
+                    <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                    </nb-icon>
+                </button>
+            </nb-form-field>
+            <div style="margin-top: 5%;" class="table-responsive table-bordered table-hover">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Nama {{data.titleModal}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data.refData | paginate: { itemsPerPage: 10, currentPage: p }"
+                            style="cursor:pointer">
+                            <td class="text-left">{{item.id}}</td>
+                            <td class="text-left" (click)="selectRef(item, data.type);windowRef.close();"
+                                data-dismiss="modal">{{item.value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </nb-card-body>
+        <nb-card-footer>
+            <button class="cancel" fullWidth nbButton matRipple status="danger"
+                (click)="windowRef.close()">Tutup</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

@@ -1,0 +1,32 @@
+<div class="card">
+    <h5 class="card-header">ID Pasien: {{ statusTunggu.ID_PASIEN }}</h5>
+    <h6 class="card-header">Hari & Tgl. Masuk: {{ statusTunggu.TGL_MASUK | date:'EEEE, MMMM d, y, h:mm:ss a' }}</h6>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-4">
+              <div class="card">
+                <h5 class="card-header">Dokter</h5>
+                <img style="max-height: 600px; width: 400px;" class="card-img-top" src="assets/images/doctor1.jpg" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">{{ statusTunggu.DOKTER }}</h5>
+                  <h6 class="card-text">Sp. {{ statusTunggu.JENIS_SPESIALISASI }}</h6>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="card">
+                <h5 class="card-header">Status Antrian</h5>
+                <div [class]="getStatusStyle(statusTunggu.STATUS_TUNGGU)">
+                  <h2 style="color: #fff;" class="card-title">{{ statusTunggu.STATUS_TUNGGU }}</h2>
+                </div>
+              </div>
+              <div class="card mt-4">
+                <h5 class="card-header">Ruangan</h5>
+                <div class="card-body">
+                  <h2 class="card-title"><span class="text-primary">Ruang:</span> {{ statusTunggu.RUANGAN }}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>

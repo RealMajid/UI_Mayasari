@@ -1,0 +1,237 @@
+<div class="row">
+  <div *ngIf="!registerNo && step == 1" class="col-md-12">
+    <button (click)="newIA()" type="button" nbButton status="primary">
+      <nb-icon icon="plus-outline"></nb-icon>Tambah
+    </button>
+  </div>
+  <div class="col-md-12">
+    <nb-accordion>
+      <nb-accordion-item [expanded]="isExpanded" #item>
+        <nb-accordion-item-body style="padding: 0;">
+          <div class="row">
+            <div class="col-md-12" style="margin-bottom: 0;">
+              <nb-card [nbSpinner]="loadingData"
+              nbSpinnerStatus="primary"
+              nbSpinnerSize="large"
+              nbSpinnerMessage="loading...">
+                <nb-card-header>{{mode}} Implementing Agency</nb-card-header>
+                <nb-card-body>
+                  <form #iaForm="ngForm">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="fax" class="label">Kementerian/Lembaga</label>
+                          <span class="field-validation-valid text-danger">*</span>
+                          <nb-form-field>
+                            <input readonly required [(ngModel)]="selectedKL" fullWidth name="part" type="text" nbInput id="part"
+                              placeholder="Pilih Kementerian/Lembaga">
+                            <button nbSuffix (click)="onGetList('part')" nbButton status="primary">
+                              <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                              </nb-icon>
+                            </button>
+                          </nb-form-field>
+                          <!-- <div class="ng-autocomplete">
+                                    <ng-autocomplete [data]="participantList" [searchKeyword]="'value'"
+                                        placeHolder="Pilih Kementerian/Lembaga" name="part" [(ngModel)]="selectedKL"
+                                        [initialValue]="" (selected)="selectEvent($event, 'part')"
+                                        (inputChanged)="onChangeSearch($event, 'part')" 
+                                        [isLoading]="loadingKL"
+                                        [disabled]="loadingKL"
+                                        [debounceTime]="1500"
+                                        [itemTemplate]="itemTemplate"
+                                        [notFoundTemplate]="notFoundTemplate">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate let-item>
+                                        <a [innerHTML]="item.value"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div> -->
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="fax" class="label">Satker</label>
+                          <span class="field-validation-valid text-danger">*</span>
+                          <nb-form-field>
+                            <input readonly required [(ngModel)]="selectedSatker" fullWidth name="satker" type="text" nbInput id="satker"
+                              placeholder="Pilih Satker">
+                            <button nbSuffix (click)="onGetList('satker')" nbButton status="primary">
+                              <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                              </nb-icon>
+                            </button>
+                          </nb-form-field>
+                          <!-- <div class="ng-autocomplete">
+                            <ng-autocomplete [data]="satkerList" [searchKeyword]="'value'" placeHolder="Pilih Satker"
+                              name="satker" [(ngModel)]="selectedSatker" [initialValue]=""
+                              (selected)="selectEvent($event, 'satker')"
+                              (inputChanged)="onChangeSearch($event, 'satker')" [isLoading]="loadingSatker"
+                              [disabled]="loadingSatker" [debounceTime]="1500" [itemTemplate]="itemTemplate"
+                              [notFoundTemplate]="notFoundTemplate">
+                            </ng-autocomplete>
+
+                            <ng-template #itemTemplate let-item>
+                              <a [innerHTML]="item.value"></a>
+                            </ng-template>
+
+                            <ng-template #notFoundTemplate let-notFound>
+                              <div [innerHTML]="notFound"></div>
+                            </ng-template>
+                          </div> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="alamatPengirimSurat" class="label">Alamat Pengirim Surat</label>
+                      <span class="field-validation-valid text-danger">*</span>
+                      <textarea required [(ngModel)]="implementingAgency.alamat_satker" id="alamatPengirimSurat" nbInput
+                        fullWidth name="alamat" maxlength="500" style="height: 100px;"></textarea>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="telepon" class="label">Telepon</label>
+                          <nb-form-field>
+                            <nb-icon nbPrefix icon="phone-outline" pack="eva"></nb-icon>
+                            <input [(ngModel)]="implementingAgency.phone" name="telepon" type="text" nbInput fullWidth
+                              id="telepon" placeholder="Telepon" />
+                          </nb-form-field>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="fax" class="label">Fax</label>
+                          <nb-form-field>
+                            <nb-icon nbPrefix icon="printer-outline" pack="eva"></nb-icon>
+                            <input [(ngModel)]="implementingAgency.fax" name="fax" type="text" nbInput fullWidth
+                              id="fax" placeholder="Fax" />
+                          </nb-form-field>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="inputEmail" class="label">Email</label>
+                          <nb-form-field>
+                            <nb-icon nbPrefix icon="email-outline" pack="eva"></nb-icon>
+                            <input [(ngModel)]="implementingAgency.email" name="email" type="email" nbInput fullWidth
+                              id="inputEmail" placeholder="Email" />
+                          </nb-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </nb-card-body>
+                <nb-card-footer *ngIf="!registerNo && step == 1">
+                  <button [disabled]="!iaForm.form.valid" style="margin-right: 1rem;" nbButton matRipple status="success" (click)="save()">Simpan</button>
+                  <button *ngIf="implementingAgency.part_id>0" class="cancel" nbButton matRipple status="danger" (click)="deleteIA(implementingAgency.part_id)">Hapus</button>
+                </nb-card-footer>
+              </nb-card>
+            </div>
+          </div>
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover" style="border-radius: 5%;">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Kementerian/Lembaga</th>
+            <th scope="col">Satker</th>
+            <th scope="col">Alamat</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Fax</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of implementingAgencyList$ | async; let i = index">
+            <td>{{i + 1 + (pageSize * (pageNumber - 1))}}</td>
+            <td>{{ item.name_part }}</td>
+            <td>{{ item.nmsatker }}</td>
+            <td>{{ item.alamat_satker }}</td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.phone }}</td>
+            <td>{{ item.fax }}</td>
+            <td><a style="margin-right: 10%;" (click)="editIA(item)" class="btn btn-sm btn-primary">
+                <span style="color: #fff; cursor: pointer;" class="fa fa-edit"></span>
+              </a>
+              <a *ngIf="!registerNo && step == 1" (click)="deleteIA(item.part_id)" class="btn btn-sm btn-danger">
+                <span style="color: #fff; cursor: pointer;" class="fa fa-trash"></span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <ngx-pagination (getDataSource)="getIAList($event)"></ngx-pagination>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Recipient:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #refTemplate let-data>
+  <nb-card [nbSpinner]="loadingWindowRef" nbSpinnerStatus="primary" nbSpinnerSize="giant">
+      <nb-card-body>
+          <nb-form-field>
+              <input nbInput fullWidth type="text" class="form-control" [(ngModel)]="searchRef" (ngModelChange)="data.refData=searchReference(data.refData, data.type)"
+                  placeholder="Cari {{titleModal}}">
+                  <button nbSuffix nbButton status="primary">
+                      <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                      </nb-icon>
+                  </button>
+          </nb-form-field>
+          <div style="margin-top: 5%;" class="table-responsive table-bordered table-hover">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Kode</th>
+                          <th>Nama {{data.titleModal}}</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let item of data.refData | paginate: { itemsPerPage: 10, currentPage: p }" style="cursor:pointer">
+                          <td class="text-left">{{item.id}}</td>
+                          <td class="text-left" (click)="selectRef(item, data.type);windowRef.close()" data-dismiss="modal">{{item.value}}</td>
+                      </tr>
+                  </tbody>
+              </table>
+              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
+      </nb-card-body>
+      <nb-card-footer>
+          <button class="cancel" fullWidth nbButton matRipple status="danger" (click)="windowRef.close()">Tutup</button>
+      </nb-card-footer>
+  </nb-card>
+</ng-template>

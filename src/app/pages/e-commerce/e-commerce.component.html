@@ -1,0 +1,282 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="row">
+      <div class="col-lg-3 col-sm-6">
+        <div class="card-box bg-primary">
+          <div class="inner">
+            <h3> {{ dashboardViewModel.Queuing + dashboardViewModel.Checkup + dashboardViewModel.Closed || 0 }} </h3>
+            <p> Pasien Terdaftar </p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-user-edit" aria-hidden="true"></i>
+          </div>
+          <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-sm-6">
+        <div class="card-box bg-info">
+          <div class="inner">
+            <h3> {{ dashboardViewModel.Queuing || 0 }} </h3>
+            <p> Menunggu Antrian </p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-users" aria-hidden="true"></i>
+          </div>
+          <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card-box bg-success">
+          <div class="inner">
+            <h3> {{ dashboardViewModel.Checkup || 0 }} </h3>
+            <p> Proses Pemeriksaan </p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-user-clock" aria-hidden="true"></i>
+          </div>
+          <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card-box bg-danger">
+          <div class="inner">
+            <h3> {{ dashboardViewModel.Closed || 0 }} </h3>
+            <p> Closed </p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-user-check"></i>
+          </div>
+          <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-12">
+    <nb-card [nbSpinner]="loading" nbSpinnerStatus="primary" nbSpinnerSize="large" nbSpinnerMessage="loading...">
+      <nb-card-header>
+        <div class="row" style="padding-left: 0.85rem;">
+          <nb-icon icon="activity-outline" status="success"></nb-icon>
+          <h6 style="margin-left: 0.4rem;">Monitoring Kasus</h6>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row show-grid">
+          <div class="col-md-12">
+                  <nb-form-field>
+                      <input type="text" nbInput fullWidth placeholder="Cari...">
+                      <button nbSuffix nbButton status="primary">
+                          <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                          </nb-icon>
+                      </button>
+                  </nb-form-field>
+              </div>
+          <div class="table-responsive" style="margin-top: -0.25rem;padding: 1rem 1rem;">
+            <table class="table table-bordered table-hover" style="border-radius: 5%;">
+              <thead class="thead-light">
+                <tr>
+                  <th style="max-width: 15px;" scope="col">Kasus</th>
+                  <th scope="col">Tgl. Masuk</th>
+                  <th scope="col">Pasien</th>
+                  <th style="width: 550px;" scope="col">Status</th>
+                  <th scope="col">Tim Dokter</th>
+                  <th class="fit" scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of registerKasusList$ | async; let i = index">
+                  <td style="max-width: 15x;">{{ item.REG_NO }}</td>
+                  <td>{{ item.TGL_MASUK | date:'medium' }}</td>
+                  <td>{{ item.PASIEN }}</td>
+                  <td style="width: 550px;"><nb-progress-bar [value]="getValue(item.STATUS_KASUS)" [status]="getStatus(item.STATUS_KASUS)">{{ item.STATUS_KASUS }}</nb-progress-bar>
+                  </td>
+                  <td>{{ item.DOKTER }}</td>
+                  <td class="fit"><a data-toggle="modal" data-target="#modalRegisterPasien" style="margin-right: 5%;"
+                    class="btn btn-sm btn-primary" (click)="editRegisterKasus(item.REG_NO)">
+                    <span style="color: #fff; cursor: pointer" class="fa fa-eye"></span>
+                </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </nb-card-body>
+      <nb-card-footer>
+        <ngx-pagination (getDataSource)="getRegisterKasusList($event)"></ngx-pagination>
+      </nb-card-footer>
+    </nb-card>
+  </div>
+  <div class="col-lg-6">
+    <nb-card>
+      <nb-card-header>Statistik Penyakit yang Diderita</nb-card-header>
+      <nb-card-body>
+        <ngx-echarts-pie></ngx-echarts-pie>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-lg-6">
+    <nb-card>
+      <nb-card-header>Statistik Pasien 1 Minggu Terakhir</nb-card-header>
+      <nb-card-body>
+        <ngx-echarts-area-stack></ngx-echarts-area-stack>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <!-- <div class="col-lg-6">
+    <nb-card>
+      <nb-card-header>Rencana Penarikan Dana</nb-card-header>
+      <nb-card-body>
+        <ngx-echarts-radar></ngx-echarts-radar>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-xxl-9">
+    <ngx-country-orders></ngx-country-orders>
+  </div>
+
+  <div class="col-xxl-3">
+    <ngx-progress-section></ngx-progress-section>
+  </div> -->
+
+  <!-- <div class="col-xxl-5">
+    <ngx-traffic-reveal-card></ngx-traffic-reveal-card>
+  </div>
+
+  <div class="col-xxl-7">
+    <ngx-ecommerce-charts></ngx-ecommerce-charts>
+  </div> -->
+</div>
+
+<!-- <div class="row">
+  <div class="col-xxl-9">
+    <ngx-ecommerce-visitors-analytics></ngx-ecommerce-visitors-analytics>
+  </div>
+
+  <div class="col-xxl-3">
+    <ngx-user-activity></ngx-user-activity>
+  </div>
+</div> -->
+<div class="modal fade bd-example-modal-lg" id="modalRegisterPasien" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Register Pasien & Admisi Kasus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <nb-card [nbSpinner]="loadingModal" nbSpinnerStatus="primary" nbSpinnerSize="giant"
+                            nbSpinnerMessage="processing...">
+                            <nb-card-body>
+                                <form #frontdeskForm="ngForm">
+                                    <h5 style="text-align: center;">Informasi Pasien</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Nama</label>
+                                                <input readonly type="text" nbInput fullWidth name="name"
+                                                    placeholder="Nama..." [(ngModel)]="registerKasus.Nama">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Alamat</label>
+                                                <input readonly type="text" nbInput fullWidth name="alamat"
+                                                    placeholder="Alamat..." [(ngModel)]="registerKasus.Alamat">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Tgl. Lahir</label>
+                                                <input readonly type="date" nbInput fullWidth name="tgllahir"
+                                                placeholder="Tanggal Lahir..." [(ngModel)]="registerKasus.TglLahir">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Tempat Lahir</label>
+                                                <input readonly type="text" nbInput fullWidth name="tempatlahir"
+                                                    placeholder="Tempat Lahir..." [(ngModel)]="registerKasus.TempatLahir">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Email</label>
+                                                <input readonly type="text" nbInput fullWidth name="email"
+                                                    placeholder="Email..." [(ngModel)]="registerKasus.Email">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Telp</label>
+                                                <input readonly type="text" nbInput fullWidth name="telp"
+                                                    placeholder="Nomor Telepon..." [(ngModel)]="registerKasus.Telp">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Jenis Kelamin</label>
+                                                <select readonly [(ngModel)]="registerKasus.JenisKelamin" name="jk" class="form-control" id="jenisKelamin">
+                                                    <option value="L">Pria</option>
+                                                    <option value="P">Wanita</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5 style="text-align: center;" class="mt-2">Informasi Admisi</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="label">Tinggi Badan (cm)</label>
+                                                <input readonly type="number" nbInput fullWidth name="tinggi"
+                                                    placeholder="Tiggi Badan..." [(ngModel)]="registerKasus.TinggiBadan">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="label">Berat Badan (kg)</label>
+                                                <input readonly type="number" nbInput fullWidth name="berat"
+                                                    placeholder="Berat Badan..." [(ngModel)]="registerKasus.BeratBadan">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="label">Tensi Darah (mmHg)</label>
+                                                <input readonly type="number" nbInput fullWidth name="tensi"
+                                                    placeholder="Tensi Darah..." [(ngModel)]="registerKasus.TensiDarah">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Klinik</label>
+                                                <select readonly [(ngModel)]="registerKasus.Klinik" name="klinik" class="form-control" id="klinik">
+                                                    <option *ngFor="let item of klinikList" [value]="item.Id">{{ item.Value }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label">Keluhan</label>
+                                                <textarea readonly rows="10" cols="30" [(ngModel)]="registerKasus.Keluhan" name="keluhan" nbInput fullWidth
+                                                  id="keluhan" placeholder="Keluhan..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </nb-card-body>
+                        </nb-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

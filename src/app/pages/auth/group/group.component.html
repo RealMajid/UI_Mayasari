@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col-md-12">
+        <nb-card class="inline-form-card" [nbSpinner]="loadingGroup" nbSpinnerStatus="primary" nbSpinnerSize="giant">
+            <nb-card-header>
+                <div class="row" style="padding-left: 0.85rem;">
+                    <nb-icon icon="people-outline" status="success"></nb-icon>
+                    <h6 style="margin-left: 0.4rem;">Group</h6>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="row">
+                    <div class="col-md-12">
+                        <nb-form-field>
+                            <input [(ngModel)]="search" name="search" (keyup.enter)="getGroupList(1, parentGroupId)" id="search" type="text" nbInput fullWidth placeholder="Cari...">
+                            <button nbSuffix nbButton status="primary">
+                                <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                                </nb-icon>
+                            </button>
+                        </nb-form-field>
+                    </div> 
+                    <!-- <div class="col-md-12 form-inline">
+                        <input (keyup.enter)="onSearchPeraturan()" [(ngModel)]="search" name="search" id="search" placeholder="Cari..." type="text" nbInput fullWidth />
+                        <button (click)="onSearchPeraturan()" nbButton status="primary">
+                            <nb-icon icon="search-outline"></nb-icon>Cari
+                        </button>
+                    </div> -->
+                    <div class="col-md-12 mt-3">
+                        <button type="submit" nbButton status="primary">
+                            <nb-icon icon="person-add-outline"></nb-icon>Tambah Group
+                        </button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Nama Group</th>
+                                        <th scope="col">Deskripsi</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of groupList$; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.description }}</td>
+                                        <td><a (click)="onViewPeraturan(item)" class="btn btn-sm btn-primary">
+                                                <span style="color: #fff; cursor: pointer;" class="fa fa-eye"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </nb-card-body>
+            <nb-card-footer>
+                <ngx-pagination (getDataSource)="getGroupList($event, parentGroupId)"></ngx-pagination>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>

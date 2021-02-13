@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-md-12">
+        <nb-card [nbSpinner]="loading" nbSpinnerStatus="primary" nbSpinnerSize="large" nbSpinnerMessage="loading...">
+            <nb-card-header>
+                <div class="row" style="padding-left: 0.85rem;">
+                    <nb-icon icon="file-text-outline" status="success"></nb-icon>
+                    <h6 style="margin-left: 0.4rem;">History Medis Pasien</h6>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="row show-grid">
+                    <div class="col-md-12">
+                        <nb-form-field>
+                            <input type="text" nbInput fullWidth placeholder="Cari...">
+                            <button nbSuffix nbButton status="primary">
+                                <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                                </nb-icon>
+                            </button>
+                        </nb-form-field>
+                    </div>
+                    <div class="col-md-12" style="max-height: 56px;">
+                        <form class="form-inline">
+                            <nb-form-field>
+                                <nb-icon nbPrefix icon="calendar-outline" pack="eva"></nb-icon>
+                                <input nbInput placeholder="Pilih range tanggal..." name="rangeDate"
+                                    [nbDatepicker]="formpicker" [(ngModel)]="rangeDate">
+                                <nb-rangepicker #formpicker [range]="rangeDate" (rangeChange)="onRangeChange($event)">
+                                </nb-rangepicker>
+                            </nb-form-field>
+                            <button nbButton status="primary" (click)="onRefresh()">
+                                <nb-icon icon="refresh-outline"></nb-icon>Refresh
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-12">
+                        <!-- <button style="margin-left: 1rem" type="submit" nbButton status="info">
+                            <nb-icon icon="edit-outline"></nb-icon>Tanpa Surat
+                        </button> -->
+                    </div>
+                    <div class="table-responsive" style="margin-top: -0.25rem; padding: 0.5rem 0.5rem;">
+                        <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Reg. No</th>
+                                    <th *ngIf="identityService.role!='Pasien'" scope="col">Nama Pasien</th>
+                                    <th scope="col">Tgl. Masuk</th>
+                                    <th scope="col">Keluhan</th>
+                                    <th scope="col">Diagnosa</th>
+                                    <th scope="col">Klinik</th>
+                                    <th scope="col">Ruangan</th>
+                                    <th scope="col">Dokter</th>
+                                    <th scope="col">Status Tunggu</th>
+                                    <th class="fit" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of historyMedisPasienList$ | async; let i = index">
+                                    <td>{{i + 1 + (pageSize * (pageNumber - 1))}}</td>
+                                    <td>{{ item.REG_NO }}</td>
+                                    <td *ngIf="identityService.role!='Pasien'">{{ item.PASIEN }}</td>
+                                    <td>{{ item.TGL_MASUK | date:'medium' }}</td>
+                                    <td>{{ item.KELUHAN }}</td>
+                                    <td>{{ item.DIAGNOSA ? item.DIAGNOSA : '-' }}</td>
+                                    <td>{{ item.NAMA_KLINIK }}</td>
+                                    <td>{{ item.RUANGAN ? item.RUANGAN : '-' }}</td>
+                                    <td>{{ item.DOKTER ? item.DOKTER : '-' }}</td>
+                                    <td><span style="font-size: 0.85rem;"
+                                        [class]="getStatusStyle(item.STATUS_TUNGGU)">{{ item.STATUS_TUNGGU }}</span></td>
+                                    <td class="fit"><a style="margin-right: 5%;" (click)="onGoToPasienDetail(item.ID_PEMERIKSAAN)"
+                                            class="btn btn-sm btn-primary">
+                                            <span style="color: #fff; cursor: pointer" class="fa fa-edit"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </nb-card-body>
+            <nb-card-footer>
+                <ngx-pagination (getDataSource)="getHistoryMedisPasienList($event)"></ngx-pagination>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>

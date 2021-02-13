@@ -1,0 +1,24 @@
+@import '../../../../@theme/styles/themes';
+
+@include nb-install-component() {
+ 
+    input:disabled { 
+        color: nb-theme(text-basic-color);
+    }
+}
+
+
+span.field-validation-valid {
+    font-size: 12px;
+    margin-left: .2rem;
+}
+
+form nb-card {
+    border: none;
+    margin-bottom: 0;
+}
+
+.ng-autocomplete {
+    width: auto;
+}
+

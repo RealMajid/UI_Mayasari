@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-md-12">
+        <nb-card [nbSpinner]="loading" nbSpinnerStatus="primary" nbSpinnerSize="large" nbSpinnerMessage="loading...">
+            <nb-card-header>
+                <div class="row" style="padding-left: 0.85rem;">
+                    <nb-icon icon="file-text-outline" status="success"></nb-icon>
+                    <h6 style="margin-left: 0.4rem;">Laporan</h6>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="row show-grid">
+                    <div class="table-responsive" style="margin-top: -0.25rem; padding: 0.5rem 0.5rem;">
+                        <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 3%;" scope="col">No</th>
+                                    <th style="text-align: center;" scope="col">Nama Laporan</th>
+                                    <th class="fit" scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of jenisLaporanList$ | async; let i = index">
+                                    <td style="width: 3%;">{{i + 1}}</td>
+                                    <td>{{ item.NamaLaporan }}</td>
+                                    <td class="fit"><a style="margin-right: 5%;" (click)="onCetakLaporan(item.IdLaporan, 'PDF')"
+                                            class="btn btn-sm btn-danger">
+                                            <span style="color: #fff; cursor: pointer" class="fa fa-file-pdf"></span>
+                                        </a>
+                                        <a
+                                        class="btn btn-sm btn-primary" style="margin-right: 5%;" (click)="onCetakLaporan(item.IdLaporan, 'Word')">
+                                           <span style="color: #fff; cursor: pointer" class="fa fa-file-word"></span>
+                                       </a>
+                                       <a
+                                       class="btn btn-sm btn-success" (click)="onCetakLaporan(item.IdLaporan, 'Excel')">
+                                          <span style="color: #fff; cursor: pointer" class="fa fa-file-excel"></span>
+                                      </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </nb-card-body>
+            <nb-card-footer>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>

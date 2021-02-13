@@ -1,0 +1,54 @@
+<div class="card">
+    <h5 class="card-header">Usulan Appointment Diterima</h5>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <nb-form-field>
+                    <input name="searchRegister" type="text" nbInput fullWidth placeholder="Cari...">
+                    <button nbSuffix nbButton status="primary">
+                        <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+                </nb-form-field>
+            </div>
+            <!-- <div class="col-md-12">
+                <button type="submit" nbButton status="primary">
+                    <nb-icon icon="plus-outline"></nb-icon>Order Medis
+                </button>
+            </div> -->
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                        <thead >
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Pasien ID</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of orderMedisList$ | async; let i = index">
+                                <td>{{i + 1 + (pageSize * (pageNumber - 1))}}</td>
+                                <td>{{ item.PASIEN_ID }}</td>
+                                <td>{{ item.NAMA }}</td>
+                                <td>{{ item.TANGGAL | date }}</td>
+                                <td><a style="margin-right: 5%;" class="btn btn-sm btn-primary" title="Edit">
+                                        <span style="color: #fff; cursor: pointer;" class="fa fa-edit"></span>
+                                    </a>
+                                    <a data-toggle="modal" data-target="#exampleModalLong" class="btn btn-sm btn-info" title="Lihat Ringkasan Hibah">
+                                        <span style="color: #fff; cursor: pointer;" class="fa fa-eye"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <ngx-pagination></ngx-pagination>
+                </div>
+            </div>
+        </div>   
+    </div>
+</div>

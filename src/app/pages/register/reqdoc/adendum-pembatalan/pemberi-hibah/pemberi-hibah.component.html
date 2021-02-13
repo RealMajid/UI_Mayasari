@@ -1,0 +1,144 @@
+<form #donorForm="ngForm">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="fax" class="label">Sumber Pembiayaan</label>
+                <span class="field-validation-valid text-danger"> *</span>
+                <nb-form-field>
+                    <input readonly required [(ngModel)]="cd_fin_sour" fullWidth name="sumberPembiayaan"
+                        type="text" nbInput id="sumberPembiayaan"
+                        placeholder="Pilih Sumber Pembiayaan">
+                    <button [disabled]="isPembatalan" nbSuffix (click)="onGetList('finsour')"
+                        nbButton status="primary">
+                        <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+                </nb-form-field>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="fax" class="label">Pemberi Hibah</label>
+                <span class="field-validation-valid text-danger"> *</span>
+                <nb-form-field>
+                    <input readonly required [(ngModel)]="donor" fullWidth name="donor" type="text" nbInput id="donor"
+                        placeholder="Pilih Pemberi Hibah">
+                    <button [disabled]="isInputManual" nbSuffix (click)="onGetList('donor')" nbButton status="primary">
+                        <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+                </nb-form-field>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="fax" class="label">Negara</label>
+                <span class="field-validation-valid text-danger"> *</span>
+                <nb-form-field>
+                    <input readonly required [(ngModel)]="country" fullWidth name="country" type="text" nbInput id="country"
+                        placeholder="Pilih Negara">
+                    <button nbSuffix (click)="onGetList('country')" nbButton status="primary">
+                        <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+                </nb-form-field>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="cd_fin_sour" class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <nb-checkbox [(ngModel)]="isInputManual" name="isInputManual" (checkedChange)="toggleCheckBox($event)">Input Manual Pemberi Hibah</nb-checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" *ngIf="isInputManual">
+        <label for="pemberiHibahManual" class="label">Pemberi Hibah (Input Manual)</label>
+        <span class="field-validation-valid text-danger"> *</span>
+        <textarea required [(ngModel)]="pemberihibah.fin_sour_desc"
+            (ngModelChange)="pemberihibah.fin_sour_desc = $event.toUpperCase()" id="pemberiHibahManual"
+            nbInput fullWidth name="pemberiHibahManual" maxlength="2000"
+            style="height: 50px;">
+        </textarea>
+    </div>
+    <div class="form-group">
+        <label for="alamatPengirimSurat" class="label">Alamat Pengirim Surat</label>
+        <span class="field-validation-valid text-danger"> *</span>
+        <textarea required [(ngModel)]="pemberihibah.alamat_satker" id="alamatPengirimSurat" nbInput fullWidth name="alamat" maxlength="500"
+            style="height: 100px;"></textarea>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="telepon" class="label">Telepon</label>
+                <span class="field-validation-valid text-danger"> *</span>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="phone-outline" pack="eva"></nb-icon>
+                    <input required [(ngModel)]="pemberihibah.phone" name="phone" type="text" nbInput fullWidth id="telepon" placeholder="Telepon" />
+                </nb-form-field>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="fax" class="label">Fax</label>
+                <span class="field-validation-valid text-danger"> *</span>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="printer-outline" pack="eva"></nb-icon>
+                    <input required [(ngModel)]="pemberihibah.fax" name="fax" type="text" nbInput fullWidth id="fax" placeholder="Fax" />
+                </nb-form-field>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="inputEmail" class="label">Email</label>
+                <span class="field-validation-valid text-danger"> *</span>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="email-outline" pack="eva"></nb-icon>
+                    <input required [(ngModel)]="pemberihibah.email" name="email" type="email" nbInput fullWidth id="inputEmail" placeholder="Email" />
+                </nb-form-field>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="step==1 && !isPembatalan" style="margin-top: 1rem;" class="form-group">
+        <button [disabled]="!donorForm.form.valid" (click)="save()" type="submit" nbButton status="success">
+            <nb-icon icon="save-outline"></nb-icon>Simpan
+        </button>
+        <!-- <button (click)="deletePemberiHibah()" style="margin-left: 1rem;" type="submit" nbButton status="danger">
+            <nb-icon icon="trash-2-outline"></nb-icon>Hapus
+        </button> -->
+    </div>
+</form>
+<ng-template #refTemplate let-data>
+    <nb-card [nbSpinner]="loadingWindowRef" nbSpinnerStatus="primary" nbSpinnerSize="giant">
+        <nb-card-body>
+            <nb-form-field>
+                <input nbInput fullWidth type="text" class="form-control" [(ngModel)]="searchRef" (ngModelChange)="data.refData=searchReference(data.refData, data.type)"
+                    placeholder="Cari {{titleModal}}">
+                    <button nbSuffix nbButton status="primary">
+                        <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+            </nb-form-field>
+            <div style="margin-top: 5%;" class="table-responsive table-bordered table-hover">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Nama {{data.titleModal}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data.refData | paginate: { itemsPerPage: 10, currentPage: p }" style="cursor:pointer">
+                            <td class="text-left">{{item.id}}</td>
+                            <td class="text-left" (click)="selectRef(item, data.type);windowRef.close()" data-dismiss="modal">{{item.value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </nb-card-body>
+        <nb-card-footer>
+            <button class="cancel" fullWidth nbButton matRipple status="danger" (click)="windowRef.close()">Tutup</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

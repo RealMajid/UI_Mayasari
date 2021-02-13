@@ -1,0 +1,187 @@
+<form #eaForm="ngForm">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="fax" class="label">Kementerian Negara/Lembaga</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <nb-form-field>
+                    <input readonly required [(ngModel)]="part" fullWidth name="part" type="text" nbInput id="part"
+                        placeholder="Pilih Kementerian Negara/Lembaga">
+                    <button nbSuffix (click)="onGetList('part')" nbButton status="primary">
+                        <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+                </nb-form-field>
+                <!-- <div class="ng-autocomplete">
+                    <ng-autocomplete [data]="participantList" [searchKeyword]="'value'"
+                        placeHolder="Pilih Kementerian/Lembaga" name="negara" [(ngModel)]="part"
+                        [initialValue]="" (selected)="selectEvent($event, 'part')"
+                        (inputChanged)='onChangeSearch($event)'
+                        [isLoading]="loadingKL"
+                        [disabled]="loadingKL"
+                        (inputFocused)='onFocused($event)' [itemTemplate]="itemTemplate"
+                        [notFoundTemplate]="notFoundTemplate">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplate let-item>
+                        <a [innerHTML]="item.value"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplate let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                </div> -->     
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="fax" class="label">Satker</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <nb-form-field>
+                    <input readonly required [(ngModel)]="satker" fullWidth name="satker" type="text" nbInput id="satker"
+                        placeholder="Pilih Satker">
+                    <button nbSuffix (click)="onGetList('satker')" nbButton status="primary">
+                        <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+                </nb-form-field>
+                <!-- <div class="ng-autocomplete">
+                    <ng-autocomplete [data]="satkerList" [searchKeyword]="'value'"
+                        placeHolder="Pilih Satker" name="satker" [(ngModel)]="satker"
+                        [initialValue]="" (selected)="selectEvent($event, 'satker')"
+                        (inputChanged)='onChangeSearch($event)'
+                        [isLoading]="loadingSatker"
+                        [disabled]="loadingSatker"
+                        (inputFocused)='onFocused($event)' [itemTemplate]="itemTemplate"
+                        [notFoundTemplate]="notFoundTemplate">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplate let-item>
+                        <a [innerHTML]="item.value"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplate let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                </div> -->
+                <!-- <nb-card>
+                    <input [ngModel]="satker" (ngModelChange)="onSatkerChange($event)"
+                        name="satker" nbInput type="text" placeholder="Pilih Satker..."
+                        [nbAutocomplete]="autoSatker" />
+
+                    <nb-autocomplete #autoSatker>
+                        <nb-option *ngFor="let option of filteredSatkerOptions$ | async"
+                                value="option">
+                            {{ option }}
+                        </nb-option>
+                    </nb-autocomplete>
+                </nb-card> -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="fax" class="label">Provinsi</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <div class="ng-autocomplete">
+                    <ng-autocomplete required [data]="lokasiList" [searchKeyword]="'value'"
+                        placeHolder="Pilih Provinsi" name="lokasi" [(ngModel)]="lokasi"
+                        [initialValue]="" (selected)="selectEvent($event, 'lokasi')"
+                        (inputChanged)='onChangeSearch($event)'
+                        [isLoading]="loadingLokasi"
+                        [disabled]="loadingLokasi"
+                        (inputFocused)='onFocused($event)' [itemTemplate]="itemTemplate"
+                        [notFoundTemplate]="notFoundTemplate">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplate let-item>
+                        <a [innerHTML]="item.value"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplate let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="alamatPengirimSurat" class="label">Alamat Pengirim Surat</label>
+        <span class="field-validation-valid text-danger">*</span>
+        <textarea required [(ngModel)]="executingAgency.alamat_satker" id="alamatPengirimSurat" nbInput fullWidth name="alamat" maxlength="500"
+            style="height: 100px;"></textarea>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="telepon" class="label">Telepon</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="phone-outline" pack="eva"></nb-icon>
+                    <input required [(ngModel)]="executingAgency.phone" name="phone" type="text" nbInput fullWidth id="telepon" placeholder="Telepon" />
+                </nb-form-field>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="fax" class="label">Fax</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="printer-outline" pack="eva"></nb-icon>
+                    <input required [(ngModel)]="executingAgency.fax" name="fax" type="text" nbInput fullWidth id="fax" placeholder="Fax" />
+                </nb-form-field>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="inputEmail" class="label">Email</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="email-outline" pack="eva"></nb-icon>
+                    <input required [(ngModel)]="executingAgency.email" name="email" type="email" nbInput fullWidth id="inputEmail" placeholder="Email" />
+                </nb-form-field>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!registerNo && step == 1" style="margin-top: 1rem;" class="form-group">
+        <button [disabled]="!eaForm.form.valid" (click)="save()" type="submit" nbButton status="success">
+            <nb-icon icon="save-outline"></nb-icon>Simpan
+        </button>
+        <button *ngIf="executingAgency.part_id>0" (click)="deleteEA()" style="margin-left: 1rem;" type="submit" nbButton status="danger">
+            <nb-icon icon="trash-2-outline"></nb-icon>Hapus
+        </button>
+    </div>
+</form>
+<ng-template #refTemplate let-data>
+    <nb-card [nbSpinner]="loadingWindowRef" nbSpinnerStatus="primary" nbSpinnerSize="giant">
+        <nb-card-body>
+            <nb-form-field>
+                <input nbInput fullWidth type="text" class="form-control" [(ngModel)]="searchRef" (ngModelChange)="data.refData=searchReference(data.refData, data.type)"
+                    placeholder="Cari {{titleModal}}">
+                    <button nbSuffix nbButton status="primary">
+                        <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+            </nb-form-field>
+            <div style="margin-top: 5%;" class="table-responsive table-bordered table-hover">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Nama {{data.titleModal}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data.refData | paginate: { itemsPerPage: 10, currentPage: p }" style="cursor:pointer">
+                            <td class="text-left">{{item.id}}</td>
+                            <td class="text-left" (click)="selectRef(item, data.type);windowRef.close()" data-dismiss="modal">{{item.value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </nb-card-body>
+        <nb-card-footer>
+            <button class="cancel" fullWidth nbButton matRipple status="danger" (click)="windowRef.close()">Tutup</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

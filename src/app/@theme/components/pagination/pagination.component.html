@@ -1,0 +1,24 @@
+
+  <ul class="pagination" *ngIf="pagedList.TotalPage>0">
+    <li [ngClass]="{'page-item': true, 'disabled': parentPage<=0}">
+      <a class="page-link" hidefocus="true" style="outline: none;cursor: pointer;" (click)="prev()">‹</a>
+    </li>
+    <li *ngFor="let item of pagination" [ngClass]="{ 'active': pageNumber==item, 'page-item': true }">
+      <a class="page-link" hidefocus="true" style="outline: none;cursor: pointer;" (click)="getData(item)">{{item}}</a>
+    </li>
+    <li [ngClass]="{'page-item': true, 'disabled': parentPage+1>=totalParentPage}">
+      <a class="page-link" (click)="next()" hidefocus="true" style="outline: none;cursor: pointer;">›</a>
+    </li>
+  </ul>
+<!-- 
+  <ul class="pagination" *ngIf="pagedList.TotalPage>0">
+    <li *ngIf="parentPage>0">
+      <a hidefocus="true" style="outline: none;cursor: pointer;" (click)="prev()">‹</a>
+    </li>
+    <li *ngFor="let item of pagination" class="{{pageNumber==item?'active':''}}">
+      <a hidefocus="true" style="outline: none;cursor: pointer;" (click)="getData(item)">{{item}}</a>
+    </li>
+    <li *ngIf="parentPage+1<totalParentPage">
+      <a (click)="next()" hidefocus="true" style="outline: none;cursor: pointer;">›</a>
+    </li>
+  </ul> -->

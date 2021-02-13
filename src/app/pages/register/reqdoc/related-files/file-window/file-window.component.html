@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-md-12">
+        <nb-card>
+            <nb-card-header>Unggah File</nb-card-header>
+            <nb-card-body>
+                <form>
+                    <div class="input-group">
+                        <div class="custom-file">
+                          <input type="file" #file (change)="onChange(file.files)" class="custom-file-input" id="validatedInputGroupCustomFile" required>
+                          <label style="overflow: hidden;" class="custom-file-label" for="validatedInputGroupCustomFile">{{ displayNameFile ? displayNameFile : "Choose file..." }}</label>
+                        </div>
+                    </div>
+                    <nb-progress-bar *ngIf="uploading" [value]="progress" [status]="status" [displayValue]="true"></nb-progress-bar>
+                </form>
+            </nb-card-body>
+            <nb-card-footer>
+                <button class="cancel" nbButton matRipple status="danger" (click)="cancel()">Cancel</button>
+                <button [disabled]="displayNameFile" nbButton matRipple status="success" (click)="uploadFile(file.files)">Upload</button>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>
+  

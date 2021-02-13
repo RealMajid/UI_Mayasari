@@ -1,0 +1,342 @@
+<div class="row">
+    <!-- <div class="col-md-12">
+        <nb-form-field>
+            <input [(ngModel)]="searchRegister" name="searchRegister" type="text" nbInput fullWidth placeholder="Cari...">
+            <button nbSuffix nbButton status="primary">
+                <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                </nb-icon>
+            </button>
+        </nb-form-field>
+    </div> -->
+    <div *ngIf="sentToKanwil!='Y'" class="col-md-12">
+        <button type="submit" nbButton status="primary" (click)="onNewRegister(0, 'register')">
+            <nb-icon icon="plus-outline"></nb-icon>Register
+        </button>
+        <button style="margin-left: 1rem" type="submit" nbButton status="info" (click)="onGoToAdendumPembatalan(0, 'adendum')">
+            <nb-icon icon="edit-outline"></nb-icon>Addendum
+        </button>
+        <button style="margin-left: 1rem" type="submit" nbButton status="danger" (click)="onGoToAdendumPembatalan(0, 'pembatalan')">
+            <nb-icon icon="minus-outline"></nb-icon>Pembatalan
+        </button>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                <thead >
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">No. Register</th>
+                        <th scope="col">Pemberi Hibah</th>
+                        <th scope="col">Nama Hibah</th>
+                        <th scope="col">Tgl. Perjanjian</th>
+                        <th scope="col">MTU</th>
+                        <th scope="col">Nilai Hibah</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of reqDocList$ | async; let i = index">
+                        <td>{{i + 1 + (pageSize * (pageNumber - 1))}}</td>
+                        <td>{{ item.register_no }}</td>
+                        <td>{{ item.donor_name }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.d_sign | date }}</td>
+                        <td>{{ item.cu_base }}</td>
+                        <td>{{ item.amt | number:'1.0-0' }}</td>
+                        <td><span [class]="getStatusStyle(item.status)">{{ item.status }}</span></td>
+                        <td><a style="margin-right: 5%;" (click)="onGoToRegisterDetail(item.rc_id, item.status_register)" class="btn btn-sm btn-primary" title="Edit">
+                                <span style="color: #fff; cursor: pointer;" class="fa fa-edit"></span>
+                            </a>
+                            <a (click)="onViewRingkasanHibah(item.rc_id)" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-sm btn-info" title="Lihat Ringkasan Hibah">
+                                <span style="color: #fff; cursor: pointer;" class="fa fa-eye"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <ngx-pagination (getDataSource)="getRegisterList($event)"></ngx-pagination>
+        </div>
+    </div>
+</div>
+  <!-- Modal -->
+  <div class="modal fade bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">View Ringkasan Hibah</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <nb-card [nbSpinner]="loadingSummary">
+                <nb-card-body>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div *ngIf="!loadingSummary" id="pdfTable" class="col-md-12">
+                                <div class="col-md-12" style="text-align: center; margin-bottom: 5%;">
+                                    <h4>Ringkasan Hibah</h4>
+                                </div>
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Nama Hibah/Grant</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.nama_hibah }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>Nilai Hibah/Grant</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.nilai_hibah | number:'1.0-0' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td>Mata Uang</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.mata_uang }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">4</th>
+                                            <td>Nomor Hibah/Grant</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.nomor_hibah }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">5</th>
+                                            <td>Nomor Referensi Lain</td>
+                                            <td>:</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">6</th>
+                                            <td>Tanggal Penandatanganan</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.tgl_penandatangan }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">7</th>
+                                            <td>Kementerian Lembaga Penerima / Executing Agency</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.executing_agency }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">8</th>
+                                            <td>Kode Satker</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.kdsatker }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">9</th>
+                                            <td colspan="3">Implementing Agency / Beneficiary dan Kode Satker (bisa lebih dari satu)</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td style="padding: 0;" colspan="3">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">No</th>
+                                                            <th scope="col">Nama</th>
+                                                            <th scope="col">Alamat</th>
+                                                            <th scope="col">Kode Satker</th>
+                                                            <th scope="col">Nomor Telepon</th>
+                                                            <th scope="col">Fax</th>
+                                                            <th scope="col">Email</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let item of implementingAgencies; let i = index">
+                                                            <th scope="row">{{ i + 1 }}</th>
+                                                            <td>{{ item.nmsatker }}</td>
+                                                            <td>{{ item.alamat_satker }}</td>
+                                                            <td>{{ item.kdsatker }}</td>
+                                                            <td>{{ item.phone }}</td>
+                                                            <td>{{ item.fax }}</td>
+                                                            <td>{{ item.email }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">10</th>
+                                            <td colspan="3">Donor / Pemberi Hibah</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td>a. Negara</td>
+                                            <td>:</td>
+                                            <td>{{ donor.nmcountry }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td>b. Alamat</td>
+                                            <td>:</td>
+                                            <td>{{ donor.alamat_satker }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td>c. Nomor Telepon / Fax</td>
+                                            <td>:</td>
+                                            <td>{{ donor.phone + ' / ' + donor.fax }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td>d. E-mail</td>
+                                            <td>:</td>
+                                            <td>{{ donor.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">11</th>
+                                            <td>Sumber Pembiayaan</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.sumber_pembiayaan }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">12</th>
+                                            <td>Jenis Pembiayaan</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.jenis_pembiayaan }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">13</th>
+                                            <td>Jenis Hibah</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.jenis_hibah }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">14</th>
+                                            <td>Bentuk Hibah</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.bentuk_hibah }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">15</th>
+                                            <td>Penarikan Hibah</td>
+                                            <td>:</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td>a. Tatacara penarikan</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.tata_cara_penarikan }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td colspan="3">b. Rencana Penarikan / Disbursement Plan</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td style="padding: 0; padding-left: 3%;" colspan="3">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">No</th>
+                                                            <th scope="col">Tgl/Bulan/Tahun</th>
+                                                            <th scope="col">Nilai</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let item of rencanaPenarikan; let i = index">
+                                                            <th scope="row">{{ i + 1 }}</th>
+                                                            <td>{{ item.nama_bulan + ' ' + item.fiscal_year }}</td>
+                                                            <td>{{ item.amt | number:'1.0-0' }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">16</th>
+                                            <td>Sektor Pembiayaan</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.sektor_pembayaran }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">17</th>
+                                            <td colspan="3">Lokasi / Alokasi Proyek</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td style="padding: 0;" colspan="3">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">No</th>
+                                                            <th scope="col">Lokasi</th>
+                                                            <th scope="col">Kabupaten/Kota</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let item of lokasiProyek; let i = index">
+                                                            <th scope="row">{{ i + 1 }}</th>
+                                                            <td>{{ item.nmlokasi }}</td>
+                                                            <td>{{ item.nmkabkota }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">18</th>
+                                            <td>Tgl. Efektif / Effective Date</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.tgl_efektif }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">19</th>
+                                            <td>Tgl. Batas Waktu Pengefektifan / Date Effective Limit</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.tgl_batas_waktu_pengefektifan }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">20</th>
+                                            <td>Tgl. Batas Penarikan / Closing Date</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.tgl_batas_penarikan }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">21</th>
+                                            <td>Tgl. Penutupan Rekening / Date of Closing Account</td>
+                                            <td>:</td>
+                                            <td>{{ summaryHibah.tgl_penutupan_rekening }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">22</th>
+                                            <td>Ketentuan pengiriman NoD</td>
+                                            <td>:</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">23</th>
+                                            <td>Persyaratan Pengefektifan / Condition Precedent of Effectiveness</td>
+                                            <td>:</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="col-md-12" style="text-align: left; margin-top: 5%; margin-left: 3%;">
+                                    <ngx-barcode [bc-width]="0.8" [bc-height]="50" [bc-font-size]="15" [bc-value]="summaryHibah.kanwil" [bc-display-value]="true"></ngx-barcode>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          <!-- <button type="button" class="btn btn-primary" (click)="captureScreen()">Download</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+

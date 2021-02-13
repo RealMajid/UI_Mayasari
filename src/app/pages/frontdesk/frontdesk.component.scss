@@ -1,0 +1,76 @@
+@import '../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^=col-] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        text-align: center;
+        background-color: nb-theme(background-basic-color-2);
+        padding: 0.75rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+
+  // div[class^=col-] {
+  //      margin-bottom: 1rem;
+  // }
+
+  th, td {
+    font-size: .8rem;
+  }
+
+  th {
+    background-color: nb-theme(background-basic-color-2);
+  }
+
+  .form-inline [fullWidth] {
+    flex: 1;
+  }
+  
+  .form-inline > * {
+    margin: 0 1.5rem 1.5rem 0;
+  }
+
+  th, td {
+    font-size: .75rem;
+  }
+
+  .table-responsive {
+    margin-top: 1rem;
+  }
+
+  .table td.fit, 
+  .table th.fit {
+      white-space: nowrap;
+      width: 1%;
+  }
+  
+}
+
+:host ::ng-deep .modal-content {
+  width: auto;
+}
+
+
+// .center {
+//   position: absolute;
+//   left: 50%;
+//   top: 50%;
+//   transform: translate(-50%, -50%);
+// }
+
+
+.modal-dialog { /* Width */
+  max-width: 50%;
+}
+

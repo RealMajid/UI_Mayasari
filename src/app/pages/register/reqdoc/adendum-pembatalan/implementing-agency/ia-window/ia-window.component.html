@@ -1,0 +1,115 @@
+<div class="row">
+    <div class="col-md-12">
+        <nb-card>
+            <nb-card-header>Rekam Implementing Agency</nb-card-header>
+            <nb-card-body>
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fax" class="label">Kementerian/Lembaga</label>
+                                <span class="field-validation-valid text-danger">*</span>
+                                <div class="ng-autocomplete">
+                                    <ng-autocomplete [data]="participantList" [searchKeyword]="'value'"
+                                        placeHolder="Pilih Kementerian/Lembaga" name="part" [(ngModel)]="selectedKL"
+                                        [initialValue]="" (selected)="selectEvent($event, 'part')"
+                                        (inputChanged)="onChangeSearch($event, 'part')" 
+                                        [isLoading]="loadingKL"
+                                        [disabled]="loadingKL"
+                                        [debounceTime]="1500"
+                                        [itemTemplate]="itemTemplate"
+                                        [notFoundTemplate]="notFoundTemplate">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate let-item>
+                                        <a [innerHTML]="item.value"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fax" class="label">Satker</label>
+                                <span *ngIf="!selectedSatker" class="field-validation-valid text-danger">*</span>
+                                <!-- <nb-form-field>
+                                    <input disabled [(ngModel)]="selectedSatker.value" name="satker" type="text" nbInput
+                                         id="satker" placeholder="Kementerian/Lembaga">
+                                    <button style="margin-left: -1.2%;margin-bottom: 0.8%;" (click)="onGetList('satker')" nbButton status="primary">
+                                        <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                                        </nb-icon>
+                                    </button>
+                                </nb-form-field> -->
+                                <div class="ng-autocomplete">
+                                    <ng-autocomplete [data]="satkerList" [searchKeyword]="'value'"
+                                        placeHolder="Pilih Satker" name="satker" [(ngModel)]="selectedSatker" [initialValue]=""
+                                        (selected)="selectEvent($event, 'satker')"
+                                        (inputChanged)="onChangeSearch($event, 'satker')"
+                                        [isLoading]="loadingSatker"
+                                        [disabled]="loadingSatker"
+                                        [debounceTime]="1500"
+                                        [itemTemplate]="itemTemplate"
+                                        [notFoundTemplate]="notFoundTemplate">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate let-item>
+                                        <a [innerHTML]="item.value"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamatPengirimSurat" class="label">Alamat Pengirim Surat</label>
+                        <span *ngIf="!implementingAgency.alamat_satker" class="field-validation-valid text-danger">*</span>
+                        <textarea [(ngModel)]="implementingAgency.alamat_satker" id="alamatPengirimSurat" nbInput fullWidth
+                            name="alamat" maxlength="500" style="height: 100px;"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="telepon" class="label">Telepon</label>
+                                <nb-form-field>
+                                    <nb-icon nbPrefix icon="phone-outline" pack="eva"></nb-icon>
+                                    <input [(ngModel)]="implementingAgency.phone" name="telepon" type="text" nbInput
+                                        fullWidth id="telepon" placeholder="Telepon" />
+                                </nb-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="fax" class="label">Fax</label>
+                                <nb-form-field>
+                                    <nb-icon nbPrefix icon="printer-outline" pack="eva"></nb-icon>
+                                    <input [(ngModel)]="implementingAgency.fax" name="fax" type="text" nbInput fullWidth
+                                        id="fax" placeholder="Fax" />
+                                </nb-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="inputEmail" class="label">Email</label>
+                                <nb-form-field>
+                                    <nb-icon nbPrefix icon="email-outline" pack="eva"></nb-icon>
+                                    <input [(ngModel)]="implementingAgency.email" name="email" type="email" nbInput
+                                        fullWidth id="inputEmail" placeholder="Email" />
+                                </nb-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </nb-card-body>
+            <nb-card-footer>
+                <button class="cancel" nbButton matRipple status="danger" (click)="cancel()">Batal</button>
+                <button nbButton matRipple status="success" (click)="submit()">Submit</button>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>

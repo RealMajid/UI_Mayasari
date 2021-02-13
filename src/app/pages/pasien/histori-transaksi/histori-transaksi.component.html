@@ -1,0 +1,68 @@
+<div class="row">
+    <!-- <div *ngIf="!registerNo && step == 1" class="col-md-12">
+        <button (click)="newLokasi()" type="button" nbButton status="primary">
+            <nb-icon icon="plus-outline"></nb-icon>Tambah
+        </button>
+    </div> -->
+    
+    <div class="col-md-12">
+      <div class="table-responsive">
+          <table class="table table-bordered table-hover" style="border-radius: 5%;">
+              <thead >
+                  <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">Nama</th>
+                      <th scope="col">Jenis</th>
+                      <th scope="col">Jumlah</th>
+                      <!-- <th scope="col"></th> -->
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let item of historiTransaksiList$ | async; let i = index">
+                      <td>{{i + 1 + (pageSize * (pageNumber - 1))}}</td>
+                      <td>{{ item.JENIS }}</td>
+                      <td>{{ item.NAMA }}</td>
+                      <td>{{ item.JUMLAH }}</td>
+                      <!-- <td><a data-toggle="modal" data-target="#modalOrderMedis" (click)="editOrderMedis(item.ID_ORDER)" style="margin-right: 5%;" class="btn btn-sm btn-primary" title="Edit">
+                              <span style="color: #fff; cursor: pointer;" class="fa fa-edit"></span>
+                          </a>
+                      </td> -->
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      <div>
+          <ngx-pagination (getDataSource)="getOrderMedisList($event)"></ngx-pagination>
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Recipient:</label>
+              <input type="text" class="form-control" id="recipient-name">
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Message:</label>
+              <textarea class="form-control" id="message-text"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Send message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+

@@ -1,0 +1,202 @@
+<div class="row">
+    <div class="col-md-12">
+        <nb-card [nbSpinner]="loadingData" nbSpinnerStatus="primary" nbSpinnerSize="large">
+            <nb-card-header>
+                <div class="row" style="padding-left: 0.85rem;">
+                    <nb-icon icon="eye-outline" status="success"></nb-icon>
+                    <h6 style="margin-left: 0.4rem;">Monitoring Pengelolaan Hibah - Kas</h6>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <!-- <div *ngIf="showFilter">
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <h6 class="page-title">{{settings.title}} - Filters</h6>
+                            <p class="page-subtitle">Tentukan kondisi untuk menerapkan filter data</p>
+                        </div>
+                        <div class="col-auto" style="padding-top: 10px;">
+                            <button class="btn btn-secondary" (click)="_reset()">Reset</button>
+                            <button class="btn btn-primary"
+                                style="margin-left: 5px;padding-left: 30px;padding-right: 30px;" (click)="_apply()">
+                                Terapkan</button>
+                        </div>
+                    </div>
+                    <div class="row" *ngFor="let rec of filterData; let i=index">
+                        <div class="col-md-9" style="padding-right: 0;">
+                            <div class="filter-container">
+                                <div class="btn-circle" (click)="removeFilter(i)"><i class="fas fa-minus"></i></div>
+                                <select class="form-control" [(ngModel)]="rec.name"
+                                    (ngModelChange)="onChange($event,rec)">
+                                    <option *ngFor="let item of settings.column" [value]="item.name">{{item.title}}
+                                    </option>
+                                </select>
+                                <select class="form-control" [(ngModel)]="rec.condition">
+                                    <option [value]="'is'"
+                                        *ngIf="rec.type=='text' || rec.type=='bool' || rec.type=='date' || rec.type=='number' ">
+                                        is</option>
+                                    <option [value]="'is not'"
+                                        *ngIf="rec.type=='text' || rec.type=='bool' || rec.type=='number'">is not
+                                    </option>
+                                    <option [value]="'is lower than'" *ngIf="rec.type=='number'">is lower than</option>
+                                    <option [value]="'is lower than or equal to'" *ngIf="rec.type=='number'">is lower
+                                        than
+                                        or equal to</option>
+                                    <option [value]="'is greater than'" *ngIf="rec.type=='number'">is greater than
+                                    </option>
+                                    <option [value]="'is greater than or equal to'" *ngIf="rec.type=='number'">is
+                                        greater
+                                        than or equal to</option>
+                                    <option [value]="'contains'" *ngIf="rec.type=='text'">contains</option>
+                                    <option [value]="'contains (case sensitive)'" *ngIf="rec.type=='text'">contains
+                                        (case sensitive)</option>
+                                </select>
+                                <select *ngIf="rec.type=='bool'" class="form-control" [(ngModel)]="rec.value">
+                                    <option value="true">true</option>
+                                    <option value="false">false</option>
+                                </select>
+                                <input *ngIf="rec.type!='bool' && rec.type!='date' " style="max-width: 250px;"
+                                    type="text" class="form-control" [(ngModel)]="rec.value">
+                                <div class="col-md-4" *ngIf="rec.type=='date'">
+                                    <input class="form-control" placeholder="dd-mm-yyyy" name="dp"
+                                        [(ngModel)]="rec.value" ngbDatepicker #d="ngbDatepicker">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i
+                                                class="far fa-calendar-alt"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="padding-top: 5px;">
+                            <span class="btn-circle" (click)="addFilter()"
+                                *ngIf="i==(filterData.length-1) && rec.value && rec.condition && rec.name"><i
+                                    class="fas fa-plus"></i></span>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="row show-grid">
+                    <div class="container">
+                        <div class="row">
+                            <!-- <button type="submit" class="btn btn-info col-auto mr-auto" (click)="showFilterClick()">
+                                <span class="fa fa-filter"></span> Filter
+                            </button> -->
+                            <div *ngIf="!showFilter" class="btn-group">
+                                <button (click)="exportAsExcel(1)" type="button" class="btn btn-success">
+                                    <span class="fa fa-file-excel"></span> Export
+                                </button>
+                                <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a (click)="exportAsExcel(1)" class="dropdown-item">Only this page</a>
+                                    <a (click)="exportAsExcel(2)" class="dropdown-item">All Data</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="table-responsive" style="margin-top: -0.25rem; padding: 0.5rem 0.5rem; ">
+                        <table class="table table-bordered table-hover" style="border-radius: 5%;">
+                            <thead>
+                                <tr class="bg-success" style="text-align: center; color: beige">
+                                    <th scope="col" rowspan="3">No</th>
+                                    <th scope="col" colspan="13">Register</th>
+                                    <th scope="col" colspan="2">Rekening</th>
+                                    <th scope="col" colspan="2">Revisi DIPA</th>
+                                    <th scope="col" colspan="16">Pengesahan</th>
+                                    <th scope="col" rowspan="3"></th>
+                                </tr>
+                                <tr class="bg-success header-level-2" style="text-align: center; color: beige;">
+                                    <th scope="col" rowspan="2">Nomor Register</th>
+                                    <th scope="col" rowspan="2">Tgl. Penetapan Register</th>
+                                    <th scope="col" colspan="2">Executing Agency</th>
+                                    <th scope="col" rowspan="2">Sumber Hibah</th>
+                                    <th scope="col" rowspan="2">Jenis Hibah</th>
+                                    <th scope="col" rowspan="2">Bentuk Hibah</th>
+                                    <th scope="col" rowspan="2">Nama Hibah</th>
+                                    <th scope="col" rowspan="2">Pemberi Hibah</th>
+                                    <th scope="col" rowspan="2">Tgl. Batas Penarikan</th>
+                                    <th scope="col" colspan="3">Nilai Hibah</th>
+                                    <th scope="col" rowspan="2">Tgl. Pembukaan</th>
+                                    <th scope="col" rowspan="2">No Rekening</th>
+                                    <th scope="col" rowspan="2">Tgl. DIPA</th>
+                                    <th scope="col" rowspan="2">Nomor DIPA</th>
+                                    <th scope="col" rowspan="2">Akun</th>
+                                    <th scope="col" rowspan="2">No. Dokumen</th>
+                                    <th scope="col" rowspan="2">Tgl. Pengesahan</th>
+                                    <th scope="col" rowspan="2">Tahun</th>
+                                    <th scope="col" rowspan="2">Bulan</th>
+                                    <th scope="col" rowspan="2">Triwulan</th>
+                                    <th scope="col" rowspan="2">Semester</th>
+                                    <th scope="col" rowspan="2">K/L yang Mengesahkan</th>
+                                    <th scope="col" rowspan="2">Satker yang Mengesahkan</th>
+                                    <th scope="col" rowspan="2">Kode KPPN</th>
+                                    <th scope="col" colspan="3">Pendapatan (SPHL)/Pengembalian Pendapatan (SP3HL)</th>
+                                    <th scope="col" colspan="3">Belanja</th>
+                                </tr>
+                                <tr class="bg-success" style="color: beige;">
+                                    <th scope="col">Kode BA</th>
+                                    <th scope="col">Nama K/L</th>
+                                    <th scope="col">Mata Uang</th>
+                                    <th scope="col">Valas</th>
+                                    <th scope="col">IDR</th>
+                                    <th scope="col">Mata Uang</th>
+                                    <th scope="col">Valas</th>
+                                    <th scope="col">IDR</th>
+                                    <th scope="col">Mata Uang</th>
+                                    <th scope="col">Valas</th>
+                                    <th scope="col">IDR</th>
+                                </tr>
+                                <tr style="text-align: center;">
+                                    <th *ngFor="let item of columnNumberLabel">{{item}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of monitorHibahKasList$ | async; let i = index">
+                                    <td>{{i + 1 + (pageSize * (pageNumber - 1))}}</td>
+                                    <td>{{ item.register_no }}</td>
+                                    <td>{{ item.tgl_penetapan | date }}</td>
+                                    <td>{{ item.pa_id }}</td>
+                                    <td>{{ item.beneficiary_name }}</td>
+                                    <td>{{ item.sumber_hibah }}</td>
+                                    <td>{{ item.jenis_hibah }}</td>
+                                    <td>{{ item.bentuk_hibah }}</td>
+                                    <td>{{ item.nama_hibah }}</td>
+                                    <td>{{ item.pemberi_hibah }}</td>
+                                    <td>{{ item.tgl_batas_penarikan | date }}</td>
+                                    <td>{{ item.mata_uang }}</td>
+                                    <td>{{ item.jumlah_hibah_valas | number : '1.0-2' }}</td>
+                                    <td>{{ item.jumlah_hibah_rupiah | number : '1.0-2' }}</td>
+                                    <td>{{ item.tgl_izin_rek | date }}</td>
+                                    <td>{{ item.no_rek }}</td>
+                                    <td>{{ item.tgl_izin_dipa | date }}</td>
+                                    <td>{{ item.no_dipa }}</td>
+                                    <td>{{ item.akun }}</td>
+                                    <td>{{ item.no_dokumen }}</td>
+                                    <td>{{ item.tgl_pengesahan }}</td>
+                                    <td>{{ item.tahun }}</td>
+                                    <td>{{ item.bulan }}</td>
+                                    <td>{{ item.triwulan }}</td>
+                                    <td>{{ item.semester }}</td>
+                                    <td>{{ item.nm_kl }}</td>
+                                    <td>{{ item.nm_satker }}</td>
+                                    <td>{{ item.kdkppn }}</td>
+                                    <td>{{ item.mata_uang_sphl_sp3hl }}</td>
+                                    <td>{{ item.valas_sphl_sp3hl | number : '1.0-2'  }}</td>
+                                    <td>{{ item.rupiah_sphl_sp3hl | number : '1.0-2'  }}</td>
+                                    <td>{{ item.mata_uang_belanja }}</td>
+                                    <td>{{ item.valas_belanja_hibah | number : '1.0-2'  }}</td>
+                                    <td>{{ item.rupiah_belanja_hibah | number : '1.0-2'  }}</td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </nb-card-body>
+            <nb-card-footer>
+                <ngx-pagination (getDataSource)="getMonitoringHibahBarangJasaList($event)"></ngx-pagination>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>

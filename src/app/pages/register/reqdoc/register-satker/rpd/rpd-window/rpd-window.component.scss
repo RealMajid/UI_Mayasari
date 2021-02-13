@@ -1,0 +1,16 @@
+@import '../../../../../../@theme/styles/themes';
+
+@include nb-install-component() {
+  input {
+    width: 100%;
+  }
+
+  .cancel {
+    margin-right: 1rem;
+  }
+
+  .form-group nb-card {
+    margin-bottom: 0;
+    border: 0;
+}
+}

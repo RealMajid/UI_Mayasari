@@ -1,0 +1,140 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card">
+      <nb-card-header>
+        <div class="row" style="padding-left: 0.85rem;">
+          <div style="padding-top: 5px;" class="row col-auto mr-auto">
+            <nb-icon icon="archive-outline" status="success"></nb-icon>
+            <h6 style="margin-left: 0.4rem;">Frequently Asked Questions (FAQ)</h6>
+          </div>
+          <button style="padding: 0;" class="btn btn-light" [routerLink]="['..']">
+            <nb-icon icon="arrow-ios-back-outline" status="primary" routerLinkActive="router-link-active"></nb-icon>
+            Kembali
+          </button>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <form class="form-inline">
+          <nb-form-field fullWidth>
+            <nb-icon nbPrefix icon="search-outline" pack="eva"></nb-icon>
+            <input id="search" placeholder="Cari..." type="text"
+              nbInput fullWidth />
+          </nb-form-field>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-md-12 col-lg-3 col-xxxl-3">
+    <nb-card>
+      <nb-card-header>Kategori</nb-card-header>
+      <nb-card-body>
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+            aria-controls="v-pills-home" aria-selected="true">Registrasi</a>
+          <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+            aria-controls="v-pills-profile" aria-selected="false">Pengesahan</a>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-md-12 col-lg-8 col-xxxl-8">
+    <nb-card>
+      <nb-card-header style="margin-bottom: 20px;">Pertanyaan</nb-card-header>
+      <nb-card-body style="padding:0;">
+        <div class="tab-content" id="v-pills-tabContent">
+          <!-- <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+            Apa saja unsur-unsur pada Naskah Perjanjian Hibah? <br>
+            Mengapa setiap perjanjian hibah harus diregistrasi? <br>
+            Apa persyaratan pengajuan nomor registrasi hibah? <br>
+          </div> -->
+          <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+            <nb-accordion>
+              <nb-accordion-item style="margin-bottom: 20px;">
+                <nb-accordion-item-header [ngStyle]="{'background-color': colors.primary, 'color': '#fafafa'}">
+                  Mengapa setiap perjanjian hibah harus diregistrasi?
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                  Sesuai Peraturan Pemerintah nomor 10 tahun 2011 tentang Tata Cara Pengadaan Pinjaman Luar Negeri dan Penerimaan Hibah Pasal 74 ayat (3) diatur bahwa untuk setiap perjanjian pinjaman luar negeri dan perjanjian hibah wajib diregistrasi oleh Kementerian Keuangan.
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+            
+              <nb-accordion-item style="margin-bottom: 20px;">
+                <nb-accordion-item-header [ngStyle]="{'background-color': colors.primary, 'color': '#fafafa'}">
+                  Apa saja unsur-unsur pada Naskah Perjanjian Hibah?
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                  Naskah Perjanjian Hibah paling sedikit memuat jumlah, peruntukan, dan ketentuan serta persyaratan, dan ditandatangani oleh Menteri/Pimpinan Lembaga atau pejabat yang diberi kuasa.
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+            
+              <nb-accordion-item>
+                <nb-accordion-item-header [ngStyle]="{'background-color': colors.primary, 'color': '#fafafa'}">
+                  Apa persyaratan pengajuan nomor registrasi hibah?
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                  <p>Pengajuan permohonan nomor register hibah langsung bentuk uang dilampiri dengan:</p> 
+                  <p style="text-indent: 20px;">a. Perjanjian hibah; </p>
+                  <p style="text-indent: 20px;">b. Ringkasan Hibah;</p>
+                  <p style="text-indent: 20px;">c. Surat kuasa pendelegasian kewenangan untuk menandatangani perjanjian Hibah.</p>
+                  <p>Pengajuan permohonan nomor register hibah langsung bentuk barang/Jasa/Surat Berharga dilampiri dengan:</p>
+                  <p style="text-indent: 20px;">a. Perjanjian hibah;</p>
+                  <p style="text-indent: 20px;">b. Ringkasan Hibah;</p>
+                  <p style="text-indent: 20px;">c. Surat kuasa pendelegasian kewenangan untuk menandatangani perjanjian Hibah.</p>
+                  <p>Untuk format dokumen Ringkasan hibah sesuai dengan Lampiran Huruf C PMK 99/PMK.05/2017 tentang Administrasi Pengelolaan Hibah. </p>
+                  <p>Dokumen persyaratan yang disampaikan untuk pengajuan nomor register merupakan dokumen asli / salinan yang dilegalisir penerima Hibah.</p>
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+            </nb-accordion>
+          </div>
+          <!-- <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+            Apakah terdapat format Berita Acara Serah Terima? <br>
+            Siapa yang melakukan pengajuan pengesahan hibah? <br>
+          </div> -->
+          <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+            <nb-accordion>
+              <nb-accordion-item style="margin-bottom: 20px;">
+                <nb-accordion-item-header [ngStyle]="{'background-color': colors.primary, 'color': '#fafafa'}">
+                  Apakah terdapat format Berita Acara Serah Terima?
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>              	
+                  Tidak terdapat format baku dokumen Berita Acara Penyerahan Hibah/Berita Acara Serah Terima, namun demikian Berita Acara Penyerahan Hibah/Berita Acara Serah Terima setidaknya memiliki unsur-unsur yang harus dipenuhi, antara lain Tanggal Serah Terima, Pihak Pemberi dan Penerima, Tujuan Penyerahan, Nilai Nominal, Bentuk Hibah, dan Rincian Harga per Barang.
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+            
+              <nb-accordion-item style="margin-bottom: 20px;">
+                <nb-accordion-item-header [ngStyle]="{'background-color': colors.primary, 'color': '#fafafa'}">
+                  Siapa yang melakukan pengajuan pengesahan hibah?
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>              	
+                  Pengajuan pengesahan hibah dilakukan oleh penerima hibah, yang pengajuan pengesahannya ditandatangani oleh Pengguna Anggaran/Kuasa Pengguna Anggaran.
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+            
+              <nb-accordion-item style="margin-bottom: 20px;">
+                <nb-accordion-item-header [ngStyle]="{'background-color': colors.primary, 'color': '#fafafa'}">
+                  Bagaimana jika dalam Berita Acara Serah Terima tidak diketahui nilai hibah yang diterima?
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                  Menteri/pimpinan lembaga/kepala kantor/Satker selaku PA/KPA penerima hibah dapat melakukan estimasi nilai wajar atas barang/jasa/surat berharga yang diterima dan kemudian dituangkan pada dokumen BAST atau lampiran dokumen BAST yang dan disetujui oleh pihak pemberi dan penerima hibah.
+                  Apabila nilai barang/jasa/surat berharga dalam mata uang asing, maka untuk nilai dalam Rupiahnya dikonversi berdasarkan kurs tengah Bank Indonesia pada tanggal BAST.
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+
+              <nb-accordion-item>
+                <nb-accordion-item-header [ngStyle]="{'background-color': colors.primary, 'color': '#fafafa'}">
+                 	Berapa nilai aset terendah dari suatu barang yang layak diserahterimakan ke Pemerintah/Counterpart sesuai dengan regulasi Kementerian Keuangan?
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                  Kementerian Keuangan tidak mengatur batasan minimal nilai aset yang akan diserahterimakan atau dihibahkan antara pihak pemberi (donor) dengan pihak penerima.
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+            </nb-accordion>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+</div>

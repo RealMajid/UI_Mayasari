@@ -1,0 +1,229 @@
+<form #reqDocForm="ngForm">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="fax" class="label">Kementerian/Lembaga</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <nb-form-field>
+                    <input readonly required [(ngModel)]="kementerianLembaga" fullWidth name="kl" type="text" nbInput id="kl"
+                        placeholder="Kementerian/Lembaga">
+                    <button nbSuffix (click)="onGetList('kl')" nbButton status="primary">
+                        <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+                </nb-form-field>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="fax" class="label">Satker</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <nb-form-field>
+                    <input readonly required [(ngModel)]="satker" name="satker" type="text" nbInput fullWidth id="satker"
+                        placeholder="Satker">
+                    <button nbSuffix (click)="onGetList('satker')" nbButton status="primary">
+                        <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+                </nb-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputFirstName" class="label">Nomor Surat</label>
+                <!-- <span *ngIf="!reqDoc.req_no" class="field-validation-valid text-danger">*</span> -->
+                <input type="text" [(ngModel)]="reqDoc.req_no" name="req_no" nbInput fullWidth id="inputFirstName"
+                    placeholder="Nomor Surat">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputLastName" class="label">Tanggal Surat</label>
+                <!-- <span *ngIf="!reqDoc.d_req" class="field-validation-valid text-danger">*</span> -->
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="calendar-outline" pack="eva"></nb-icon>
+                    <input [(ngModel)]="reqDoc.d_req" name="d_req" nbInput placeholder="Tanggal Surat"
+                        [nbDatepicker]="tanggalSurat">
+                    <nb-datepicker #tanggalSurat></nb-datepicker>
+                </nb-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="perihal" class="label">Perihal</label>
+        <!-- <span *ngIf="!reqDoc.subject" class="field-validation-valid text-danger">*</span> -->
+        <input [(ngModel)]="reqDoc.subject" name="subject" type="email" nbInput fullWidth id="exampleInputEmail1"
+            placeholder="Perihal">
+    </div>
+    <!-- <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputFirstName" class="label">No. Agenda Kanwil</label>
+                <span *ngIf="!reqDoc.disp_dir_no" class="field-validation-valid text-danger">*</span>
+                <input [(ngModel)]="reqDoc.disp_dir_no" name="disp_dir_no" type="text" nbInput fullWidth
+                    id="inputFirstName" placeholder="No. Agenda Kanwil">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputLastName" class="label">Tgl. Agenda Kanwil</label>
+                <span *ngIf="!reqDoc.d_disp_dir" class="field-validation-valid text-danger">*</span>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="calendar-outline" pack="eva"></nb-icon>
+                    <input [(ngModel)]="reqDoc.d_disp_dir" name="d_disp_dir" nbInput placeholder="Tgl. Agenda Kanwil"
+                        [nbDatepicker]="tglAgendaKanwil">
+                    <nb-datepicker #tglAgendaKanwil></nb-datepicker>
+                </nb-form-field>
+            </div>
+        </div>
+    </div> -->
+    <div class="row">
+        <div class="col-md-9">
+            <div class="form-group">
+                <label for="jabatan" class="label">Pejabat Pengirim Surat dan Ringkasan Hibah</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <input required [(ngModel)]="reqDoc.jabatan" name="jabatan" type="text" nbInput fullWidth id="jabatan"
+                    placeholder="Pejabat Pengirim Surat">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="nip" class="label">NIP</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <input maxlength="18" required [(ngModel)]="reqDoc.nip" name="nip" type="text" nbInput fullWidth id="nip"
+                    placeholder="Nomor Induk Pegawai">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="lokasi" class="label">Lokasi Penandatangan Ringkasan Hibah</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <!-- <nb-form-field>
+                    <input readonly required [(ngModel)]="lokasi" name="lokasi" type="text" nbInput fullWidth id="lokasi"
+                        placeholder="Lokasi Penandatangan Ringkasan Hibah">
+                    <button nbSuffix (click)="onGetList('lokasi')" nbButton status="primary">
+                        <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+                </nb-form-field> -->
+                <input type="text" [(ngModel)]="reqDoc.lokasi_ttd" maxlength="150" name="lokasi" nbInput fullWidth id="inputFirstName"
+                placeholder="Lokasi Penandatangan Ringkasan Hibah">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="d_letter_sign" class="label">Tanggal Penandatangan Ringkasan Hibah</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="calendar-outline" pack="eva"></nb-icon>
+                    <input required [(ngModel)]="reqDoc.d_letter_sign" name="d_letter_sign" nbInput placeholder="Tanggal Penandatangan Ringkasan Hibah"
+                        [nbDatepicker]="tanggalTtdSurat">
+                    <nb-datepicker #tanggalTtdSurat></nb-datepicker>
+                </nb-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="alamatPengirimSurat" class="label">Alamat Pengirim Surat</label>
+        <span class="field-validation-valid text-danger">*</span>
+        <textarea required [(ngModel)]="reqDoc.address" id="alamatPengirimSurat" nbInput fullWidth name="alamat" maxlength="500"
+            style="height:100px"></textarea>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="telepon" class="label">Telepon</label>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="phone-outline" pack="eva"></nb-icon>
+                    <input [(ngModel)]="reqDoc.phone" name="phone" type="text" nbInput fullWidth id="telepon"
+                        placeholder="Telepon">
+                </nb-form-field>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="fax" class="label">Fax</label>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="printer-outline" pack="eva"></nb-icon>
+                    <input [(ngModel)]="reqDoc.fax" name="fax" type="text" nbInput fullWidth id="fax" placeholder="Fax">
+                </nb-form-field>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="inputEmail" class="label">Email</label>
+                <span class="field-validation-valid text-danger">*</span>
+                <nb-form-field>
+                    <nb-icon nbPrefix icon="email-outline" pack="eva"></nb-icon>
+                    <input required [(ngModel)]="reqDoc.email" name="email" type="email" nbInput fullWidth id="inputEmail"
+                        placeholder="Email">
+                </nb-form-field>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="reqDoc.send_to_kanwil_yn!='Y'" style="margin-top: 1rem;" class="form-group">
+        <button [nbSpinner]="loadingSave" [disabled]="!reqDocForm.form.valid"  nbSpinnerStatus="success" (click)="saveReqDoc()" type="submit" nbButton
+            status="success">
+            <nb-icon icon="save-outline"></nb-icon>Simpan
+        </button>
+        <button *ngIf="id>0" [nbSpinner]="loadingDelete" nbSpinnerStatus="danger" (click)="confirmDelete()" style="margin-left: 1rem"
+            type="submit" nbButton status="danger">
+            <nb-icon icon="trash-2-outline"></nb-icon>Hapus
+        </button>
+    </div>
+</form>
+<ngx-spinner bdColor="rgba(0,0,0,0.3)" size="medium" color="#4269e1" type="ball-atom" [fullScreen]="false">
+    <p style="color: royalblue;"> Loading... </p>
+</ngx-spinner>
+<!-- <ngx-spinner bdColor="rgba(0, 0, 0, 0.3)" size="medium" type="ball-atom" [fullScreen]="true">
+    <p style="color: #fff;">Loading...</p>
+</ngx-spinner> -->
+<ng-template #alertTemplate let-data>
+    <nb-card>
+        <nb-card-body>
+            <p>Apakah anda yakin akan menghapus data dokumen permintaan ini?</p>
+            <p>Data terkait <strong>(Register, Perubahan Register, Pembatalan Register, File Pendukung)</strong> yang telah direkam pada dokumen ini akan dihapus</p>
+        </nb-card-body>
+        <nb-card-footer>
+            <button class="cancel" fullWidth nbButton matRipple status="danger" (click)="deleteReqDoc();windowRef.close()">Ya</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+<ng-template #refTemplate let-data>
+    <nb-card [nbSpinner]="loadingWindowRef" nbSpinnerStatus="primary" nbSpinnerSize="giant">
+        <nb-card-body>
+            <nb-form-field>
+                <input nbInput fullWidth type="text" class="form-control" [(ngModel)]="searchRef" (ngModelChange)="data.refData=searchReference(data.refData, data.type)"
+                    placeholder="Cari {{titleModal}}">
+                    <button nbSuffix nbButton status="primary">
+                        <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                        </nb-icon>
+                    </button>
+            </nb-form-field>
+            <div style="margin-top: 5%;" class="table-responsive table-bordered table-hover">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Nama {{data.titleModal}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data.refData | paginate: { itemsPerPage: 10, currentPage: p }" style="cursor:pointer">
+                            <td class="text-left">{{item.id}}</td>
+                            <td class="text-left" (click)="selectRef(item, data.type);windowRef.close();" data-dismiss="modal">{{item.value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </nb-card-body>
+        <nb-card-footer>
+            <button class="cancel" fullWidth nbButton matRipple status="danger" (click)="windowRef.close()">Tutup</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

@@ -1,0 +1,448 @@
+<div class="row">
+    <div class="col-12">
+        <nb-card>
+            <nb-card-header>
+                <div class="row">
+                    <div class="col-md-6">
+                        <nb-icon icon="file-outline" status="success"></nb-icon>
+                        <h6>Register</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a routerLink="../../..">Home</a>
+                                </li>
+                                <li class="breadcrumb-item"><a routerLink="..">Register</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    Detail Register
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <nb-tabset (changeTab)="onChangeTab($event)" fullWidth>
+                    <nb-tab [nbSpinner]="loadingNph" nbSpinnerStatus="primary" nbSpinnerSize="giant"
+                        tabIcon="file-text-outline" tabTitle="Naskah Perjanjian Hibah" responsive>
+                        <form #registerForm="ngForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="noPerjanjianHibah" class="label">Nomor Perjanjian Hibah</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <input required [(ngModel)]="register.referensi" name="referensi" type="text"
+                                            nbInput fullWidth id="noPerjanjianHibah"
+                                            placeholder="Nomor Perjanjian Hibah" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="registerNo">
+                                    <div class="form-group">
+                                        <label for="noPerjanjianHibah" class="label">Register</label>
+                                        <input readonly [(ngModel)]="register.register_no" name="register_no"
+                                            type="text" nbInput fullWidth id="noRegister" placeholder="Register" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="namaHibahLengkap" class="label">Nama Hibah Lengkap (Long
+                                            Name)</label>
+                                        <span [nbPopover]="templateRef" nbPopoverTrigger="hover"
+                                            nbPopoverPlacement="right" class="field-validation-valid"><i
+                                                class="fas fa-info-circle text-info"></i>
+                                        </span>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <input required [(ngModel)]="register.long_name"
+                                            (ngModelChange)="register.long_name = $event.toUpperCase()" name="long_name"
+                                            type="text" nbInput fullWidth id="namaHibahLengkap"
+                                            placeholder="Nama Hibah Lengkap" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="namaHibahSingkat" class="label">Nama Hibah Singkat (Short
+                                            Name)</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <input required [(ngModel)]="register.name" name="short_name" type="text" nbInput fullWidth
+                                            id="namaHibahSingkat" placeholder="Nama Hibah Singkat" />
+                                    </div>
+                                </div> -->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="noPerjanjianHibah" class="label">Mata Uang</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <div class="ng-autocomplete">
+                                            <ng-autocomplete required [data]="currencies" [searchKeyword]="'value'"
+                                                placeHolder="Mata Uang" name="mataUang" [(ngModel)]="register.cu_base"
+                                                [initialValue]="currency" (selected)="selectRef($event, 'cur')"
+                                                (inputChanged)='onChangeSearch($event)'
+                                                (inputFocused)='onFocused($event)' [itemTemplate]="itemTemplate"
+                                                [notFoundTemplate]="notFoundTemplate">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate let-item>
+                                                <a [innerHTML]="item.value"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                        </div>
+                                        <!-- <nb-card>
+                                            <nb-select placeholder="Mata Uang" matRipple name="mataUang"
+                                                [(ngModel)]="currency">
+                                                <nb-option *ngFor="let cur of currencies" matRipple value="cur.id">{{cur.value}}</nb-option>
+                                            </nb-select>
+                                        </nb-card> -->
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="noPerjanjianHibah" class="label">Nilai Hibah</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <input required [(ngModel)]="register.amt" name="amt" currencyMask nbInput
+                                            fullWidth id="nilaiHibah" placeholder="Nilai Hibah"
+                                            [options]="{ align: 'left', prefix: '', thousands: '.', decimal: ',' }" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="tglPerjanjian" class="label">Tgl. Perjanjian</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <nb-form-field>
+                                            <nb-icon nbPrefix icon="calendar-outline" pack="eva"></nb-icon>
+                                            <input required [(ngModel)]="register.d_sign" name="tglPerjanjian"
+                                                id="tglPerjanjian" nbInput placeholder="Tgl. Perjanjian"
+                                                [nbDatepicker]="tglPerjanjian" />
+                                            <nb-datepicker #tglPerjanjian></nb-datepicker>
+                                        </nb-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="tglBatasPenarikan" class="label">Tgl. Batas Penarikan</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <nb-form-field>
+                                            <nb-icon nbPrefix icon="calendar-outline" pack="eva"></nb-icon>
+                                            <input required [(ngModel)]="register.d_draw_lim"
+                                                (ngModelChange)="onDDrawLimChange($event)" name="tglBatasPenarikan"
+                                                id="tglBatasPenarikan" nbInput placeholder="Tgl. Batas Penarikan"
+                                                [nbDatepicker]="tglBatasPenarikan" />
+                                            <nb-datepicker #tglBatasPenarikan></nb-datepicker>
+                                        </nb-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="sumberHibah" class="label">Sumber Hibah</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <nb-card>
+                                            <nb-select required placeholder="Sumber Hibah" matRipple name="sumberHibah"
+                                                [(ngModel)]="register.cd_ud2">
+                                                <nb-option matRipple value="1">Luar Negeri</nb-option>
+                                                <nb-option matRipple value="2">Dalam Negeri</nb-option>
+                                            </nb-select>
+                                        </nb-card>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="jenisHibah" class="label">Jenis Hibah</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <nb-card>
+                                            <nb-select required placeholder="Jenis Hibah" matRipple name="jenisHibah"
+                                                [(ngModel)]="register.cd_ud1">
+                                                <nb-option matRipple value="8">Langsung</nb-option>
+                                                <nb-option matRipple value="2">Terencana</nb-option>
+                                            </nb-select>
+                                        </nb-card>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="sumberHibah" class="label">Bentuk Hibah</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <nb-card>
+                                            <nb-select required placeholder="Bentuk Hibah" matRipple name="bentukHibah"
+                                                [(ngModel)]="bentukHibah" (ngModelChange)="onBentukHibahChange()">
+                                                <nb-option matRipple *ngFor="let bentuk of bentukHibahList"
+                                                    [value]="bentuk.id">{{bentuk.value}}</nb-option>
+                                            </nb-select>
+                                        </nb-card>
+                                    </div>
+                                </div>
+                                <div class="col-md-3"
+                                    *ngIf="register.cd_ud5=='3'||register.cd_ud5=='5'||register.cd_ud5=='7'||register.cd_ud5=='8'">
+                                    <div class="form-group">
+                                        <label for="tglPenutupanRekening" class="label">Tgl. Penutupan Rekening</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <nb-form-field>
+                                            <nb-icon nbPrefix icon="calendar-outline" pack="eva"></nb-icon>
+                                            <input required [(ngModel)]="register.d_closing_account"
+                                                name="tglPenutupanRekening" id="tglPenutupanRekening" nbInput
+                                                placeholder="Tgl. Penutupan Rekening"
+                                                [nbDatepicker]="tglPenutupanRekening" />
+                                            <nb-datepicker [min]="minDClosingAccount" #tglPenutupanRekening>
+                                            </nb-datepicker>
+                                        </nb-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" *ngIf="register.cd_ud5 && register.cd_ud5!=4">
+                                    <div class="form-group">
+                                        <label for="jenisHibah" class="label">Jenis Pembiayaan</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <nb-card>
+                                            <ng-container
+                                                *ngIf="this.register.cd_ud5=='8'||this.register.cd_ud5=='5'||this.register.cd_ud5=='6'||this.register.cd_ud5=='7'; else single">
+                                                <nb-select #multipleSelect required fullWidth multiple
+                                                    placeholder="Jenis Pembiayaan" matRipple name="jenisPembiayaan"
+                                                    [(ngModel)]="registerFinancingTypesMultiple"
+                                                    (selectedChange)="onFinTypeChangeMultiple($event)">
+                                                    <nb-option-group title="Hibah Kas"
+                                                        *ngIf="register.cd_ud5=='5'||register.cd_ud5=='7'||register.cd_ud5=='8'">
+                                                        <nb-option matRipple
+                                                            *ngFor="let jenis of jenisPembiayaanKasList"
+                                                            [value]="jenis">{{jenis.sys_name}}</nb-option>
+                                                    </nb-option-group>
+
+                                                    <nb-option-group title="Hibah Barang"
+                                                        *ngIf="register.cd_ud5=='5'||register.cd_ud5=='6'||register.cd_ud5=='7'">
+                                                        <nb-option matRipple
+                                                            *ngFor="let jenis of jenisPembiayaanBarangList"
+                                                            [value]="jenis">{{jenis.sys_name}}</nb-option>
+                                                    </nb-option-group>
+
+                                                    <nb-option-group title="Hibah Jasa"
+                                                        *ngIf="register.cd_ud5=='6'||register.cd_ud5=='7'||register.cd_ud5=='8'">
+                                                        <nb-option matRipple
+                                                            *ngFor="let jenis of jenisPembiayaanJasaList"
+                                                            [value]="jenis">{{jenis.sys_name}}</nb-option>
+                                                    </nb-option-group>
+                                                </nb-select>
+                                            </ng-container>
+                                            <ng-template #single>
+                                                <nb-select fullWidth required placeholder="Jenis Pembiayaan"
+                                                    matRipple name="jenisPembiayaan"
+                                                    [(ngModel)]="registerFinancingTypes"
+                                                    (selectedChange)="onFinTypeChange($event)">
+                                                    <nb-option-group title="Hibah Kas"
+                                                        *ngIf="register.cd_ud5=='3'">
+                                                        <nb-option matRipple
+                                                            *ngFor="let jenis of jenisPembiayaanKasList"
+                                                            [value]="jenis">{{jenis.sys_name}}</nb-option>
+                                                    </nb-option-group>
+
+                                                    <nb-option-group title="Hibah Barang"
+                                                        *ngIf="register.cd_ud5=='1'">
+                                                        <nb-option matRipple
+                                                            *ngFor="let jenis of jenisPembiayaanBarangList"
+                                                            [value]="jenis">{{jenis.sys_name}}</nb-option>
+                                                    </nb-option-group>
+
+                                                    <nb-option-group title="Hibah Jasa"
+                                                        *ngIf="register.cd_ud5=='2'">
+                                                        <nb-option matRipple
+                                                            *ngFor="let jenis of jenisPembiayaanJasaList"
+                                                            [value]="jenis">{{jenis.sys_name}}</nb-option>
+                                                    </nb-option-group>
+                                                </nb-select>
+                                            </ng-template>
+                                        </nb-card>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-md-4" *ngIf="register.cd_ud5=='1'||register.cd_ud5=='5'||register.cd_ud5=='6'||register.cd_ud5=='7'"> -->
+                            </div>
+                            <div class="form-group">
+                                <label for="deskripsiHibah" class="label">Maksud dan Tujuan Hibah</label>
+                                <span [nbPopover]="deskripsiHibahRef" nbPopoverTrigger="hover"
+                                    nbPopoverPlacement="right" class="field-validation-valid"><i
+                                        class="fas fa-info-circle text-info"></i>
+                                </span>
+                                <span class="field-validation-valid text-danger">*</span>
+                                <textarea required [(ngModel)]="register.description"
+                                    (ngModelChange)="register.description = $event.toUpperCase()" id="deskripsiHibah"
+                                    nbInput fullWidth name="deskripsi" maxlength="3000"
+                                    style="height: 100px;"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sektorEkonomi" class="label">Sektor Ekonomi</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <nb-form-field>
+                                            <input required readonly [(ngModel)]="cd_econsect" fullWidth
+                                                name="sektorEkonomi" type="text" nbInput id="sektorEkonomi"
+                                                placeholder="Pilih Sektor Ekonomi">
+                                            <button nbSuffix (click)="onGetList('econsect')" nbButton status="primary">
+                                                <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                                                </nb-icon>
+                                            </button>
+                                        </nb-form-field>
+                                        <!-- <div class="ng-autocomplete">
+                                            <ng-autocomplete [data]="sektorEkonomiList" [searchKeyword]="'value'"
+                                                placeHolder="Pilih Sektor Ekonomi" name="sektorEkonomi" [(ngModel)]="cd_econsect"
+                                                [initialValue]="" (selected)="selectEvent($event, 'econsect')"
+                                                (inputChanged)='onChangeSearch($event)'
+                                                (inputFocused)='onFocused($event)' [itemTemplate]="itemTemplate"
+                                                [notFoundTemplate]="notFoundTemplate">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate let-item>
+                                                <a [innerHTML]="item.value"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="sumberPembiayaan" class="label">Sumber Pembiayaan</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <nb-form-field>
+                                            <input required readonly [(ngModel)]="cd_fin_sour" fullWidth
+                                                name="sumberPembiayaan" type="text" nbInput id="sumberPembiayaan"
+                                                placeholder="Pilih Sumber Pembiayaan">
+                                            <button nbSuffix (click)="onGetList('finsour')" nbButton status="primary">
+                                                <nb-icon icon="list-outline" pack="eva" [attr.aria-label]="'Cari'">
+                                                </nb-icon>
+                                            </button>
+                                        </nb-form-field>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="inputEmail" class="label">Tata Cara Penarikan</label>
+                                        <span class="field-validation-valid text-danger">*</span>
+                                        <nb-card>
+                                            <nb-select required placeholder="Cara Penarikan" matRipple name="caraTarik"
+                                                [(ngModel)]="register.cara_tarik">
+                                                <nb-option matRipple value="1">Pendahuluan</nb-option>
+                                                <nb-option matRipple value="2">Langsung</nb-option>
+                                                <nb-option matRipple value="3">Letter of Credit</nb-option>
+                                                <nb-option matRipple value="4">Reksus</nb-option>
+                                            </nb-select>
+                                        </nb-card>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!register.register_no && register.step == 1" style="margin-top: 1rem;"
+                                class="form-group">
+                                <button [disabled]="!registerForm.form.valid" (click)="save()" type="submit" nbButton
+                                    status="success">
+                                    <nb-icon icon="save-outline"></nb-icon>Simpan
+                                </button>
+                                <button *ngIf="rcId>0" (click)="alertDelete('register')" style="margin-left: 1rem;"
+                                    type="submit" nbButton status="danger">
+                                    <nb-icon icon="trash-2-outline"></nb-icon>Hapus
+                                </button>
+                            </div>
+                        </form>
+                    </nb-tab>
+                    <nb-tab *ngIf="rcId > 0" [nbSpinner]="loadingLokasi" nbSpinnerStatus="primary" nbSpinnerSize="giant"
+                        tabIcon="pin-outline" tabTitle="Lokasi" responsive>
+                        <ngx-lokasi [registerNo]="registerNo" [step]="step" (loadLokasi)="onLoadLokasi($event)">
+                        </ngx-lokasi>
+                    </nb-tab>
+                    <nb-tab *ngIf="rcId > 0" tabIcon="person-outline" tabTitle="Pemberi Hibah" responsive>
+                        <ngx-pemberi-hibah [registerNo]="registerNo" [step]="step"></ngx-pemberi-hibah>
+                    </nb-tab>
+                    <nb-tab *ngIf="rcId > 0" tabIcon="briefcase-outline" tabTitle="Executing Agency" responsive>
+                        <ngx-executing-agency [registerNo]="registerNo" [step]="step"></ngx-executing-agency>
+                    </nb-tab>
+                    <nb-tab *ngIf="rcId > 0" tabIcon="clipboard-outline" tabTitle="Implementing Agency" responsive>
+                        <ngx-implementing-agency [registerNo]="registerNo" [step]="step"></ngx-implementing-agency>
+                    </nb-tab>
+                    <nb-tab *ngIf="rcId > 0" tabIcon="trending-up-outline" tabTitle="Rencana Penarikan Dana" responsive>
+                        <ngx-rpd [registerNo]="registerNo" [step]="step"></ngx-rpd>
+                    </nb-tab>
+                    <nb-tab *ngIf="rcId > 0" [nbSpinner]="loadingSummary" nbSpinnerStatus="primary" nbSpinnerSize="giant" tabIcon="file-text-outline" tabTitle="Summary" responsive>
+                        <ngx-summary [registerNo]="registerNo" (loadSummary)="onLoadSummary($event)"></ngx-summary>
+                    </nb-tab>
+                </nb-tabset>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>
+
+<ng-template #alertTemplate let-data>
+    <nb-card>
+        <nb-card-body>
+            <p>Apakah anda yakin akan menghapus data register ini?</p>
+        </nb-card-body>
+        <nb-card-footer>
+            <button class="cancel" fullWidth nbButton matRipple status="danger"
+                (click)="deleteData(data.jenis);windowRef.close()">Ya</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+<ng-template #refTemplate let-data>
+    <nb-card [nbSpinner]="loadingWindowRef" nbSpinnerStatus="primary" nbSpinnerSize="giant">
+        <nb-card-body>
+            <nb-form-field>
+                <input nbInput fullWidth type="text" class="form-control" [(ngModel)]="searchRef"
+                    (ngModelChange)="data.refData=searchReference(data.refData, data.type)"
+                    placeholder="Cari {{titleModal}}">
+                <button nbSuffix nbButton status="primary">
+                    <nb-icon icon="search-outline" pack="eva" [attr.aria-label]="'Cari'">
+                    </nb-icon>
+                </button>
+            </nb-form-field>
+            <div style="margin-top: 5%;" class="table-responsive table-bordered table-hover">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Nama {{data.titleModal}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data.refData | paginate: { itemsPerPage: 10, currentPage: p }"
+                            style="cursor:pointer">
+                            <td class="text-left">{{item.id}}</td>
+                            <td class="text-left" (click)="selectRef(item, data.type);windowRef.close()"
+                                data-dismiss="modal">{{item.value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </nb-card-body>
+        <nb-card-footer>
+            <button class="cancel" fullWidth nbButton matRipple status="danger"
+                (click)="windowRef.close()">Tutup</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+<ng-template #templateRef>
+    <nb-card accent="info" style="margin-bottom: 0;">
+        <nb-card-body>
+            Diisi sesuai dengan <strong>nama Naskah Perjanjian Hibah (NPH)</strong>, <br> apabila menggunakan dokumen
+            yang dipersamakan dengan NPH,
+            maka nama hibah diisi dengan format: <br><strong>Bentuk hibah_output hibah_pemberi hibah_penerima hibah_nama
+                kegiatan/program hibah.</strong><br><br>
+            <i>(<strong>CONTOH:</strong> HIBAH BARANG BERUPA VAKSIN DARI DONOR XXX KEPADA SATKER YYY UNTUK PROGRAM THE
+                AA 030 HEALTH PORTOFOLIO)</i>
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+<ng-template #deskripsiHibahRef>
+    <nb-card accent="info" style="margin-bottom: 0;">
+        <nb-card-body>
+            Diisi sesuai maksud dan tujuan hibah. <br><br>
+            <i>(<strong>CONTOH:</strong> DALAM RANGKA PENANGGULANGAN WABAH PENYAKIT TBC)</i>
+        </nb-card-body>
+    </nb-card>
+</ng-template>

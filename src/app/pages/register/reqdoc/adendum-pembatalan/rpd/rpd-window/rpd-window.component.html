@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-md-12">
+        <nb-card>
+            <nb-card-header>Rekam Rencana Penarikan Dana</nb-card-header>
+            <nb-card-body>
+                <form #rpdForm="ngForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="bulan" class="label">Bulan</label>
+                                <span class="field-validation-valid text-danger">*</span>
+                                <nb-card>
+                                    <nb-select required placeholder="Pilih Bulan..." matRipple name="bulan"
+                                        [(ngModel)]="rpd.dsb_month">
+                                        <nb-option matRipple value="1">Januari</nb-option>
+                                        <nb-option matRipple value="2">Februari</nb-option>
+                                        <nb-option matRipple value="3">Maret</nb-option>
+                                        <nb-option matRipple value="4">April</nb-option>
+                                        <nb-option matRipple value="5">Mei</nb-option>
+                                        <nb-option matRipple value="6">Juni</nb-option>
+                                        <nb-option matRipple value="7">Juli</nb-option>
+                                        <nb-option matRipple value="8">Agustus</nb-option>
+                                        <nb-option matRipple value="9">September</nb-option>
+                                        <nb-option matRipple value="10">Oktober</nb-option>
+                                        <nb-option matRipple value="11">November</nb-option>
+                                        <nb-option matRipple value="12">Desember</nb-option>
+                                    </nb-select>
+                                </nb-card>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nilai" class="label">Nilai</label>
+                                <span class="field-validation-valid text-danger">*</span>
+                                <input required [(ngModel)]="rpd.amt" name="nilai" currencyMask nbInput fullWidth id="nilai" placeholder="Nilai"
+                                    [options]="{ align: 'left', prefix: '', thousands: '.', decimal: ',' }" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </nb-card-body>
+            <nb-card-footer>
+                <button class="cancel" nbButton matRipple status="danger" (click)="cancel()">Cancel</button>
+                <button [disabled]="!rpdForm.form.valid" nbButton matRipple status="success" (click)="submit()">Submit</button>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>
+  

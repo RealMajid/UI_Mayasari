@@ -33,6 +33,13 @@ export var formatDateTime = function (date: any) {
     return [year, month, day].join('-') + ' ' + d.getHours().toString() + ':' + d.getMinutes().toString();
 }
 
+export var getTimeFromISODateString = function(dateString: string) {
+    let TIndex = dateString.indexOf("T");
+    let jamExpiry = dateString.substring(TIndex + 1).split(":");
+
+    return jamExpiry[0] + ":" + jamExpiry[1];
+}
+
 export var customFormatDate = function (date: any) {
     console.log(date);
     var d = new String(date).substr(0,10).split("/"),

@@ -1,70 +1,127 @@
 <div class="row">
-    <div class="col-md-12">
-        <button type="button" nbButton status="primary">
-            <nb-icon icon="plus-outline"></nb-icon>New Appointment
-        </button>
+  <div class="col-md-12">
+    <button data-toggle="modal" data-target="#modalHubungiDokter" (click)="newAppointment()" type="button" nbButton
+      status="primary">
+      <nb-icon icon="plus-outline"></nb-icon>New Appointment
+    </button>
+  </div>
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover" style="border-radius: 5%;">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Tgl. Perjanjian</th>
+            <th scope="col">Jam Mulai</th>
+            <th scope="col">Jam Selesai</th>
+            <th scope="col">Keperluan</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of penjadwalanList$ | async; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.TglMulai | date:'fullDate' }}</td>
+            <td>{{ item.TglMulai | date:'shortTime' }}</td>
+            <td>{{ item.TglSelesai | date:'shortTime' }}</td>
+            <td>{{ item.Keperluan }}</td>
+            <td class="fit"><a data-toggle="modal" data-target="#modalHubungiDokter" style="margin-right: 5%;"
+                class="btn btn-sm btn-primary" (click)="editPenjadwalan(item.IdJadwal)">
+                <span style="color: #fff; cursor: pointer" class="fa fa-edit"></span>
+              </a>
+              <!-- <a *ngIf="item.STATUS_KASUS.toLowerCase()=='registered'" class="btn btn-sm btn-success"
+                (click)="admisiKasus(item.REG_NO)">
+                <span style="color: #fff; cursor: pointer" class="fa fa-check"></span>
+              </a> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="col-md-12">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover" style="border-radius: 5%;">
-                <thead >
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Dokter</th>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Keperluan</th>
-                        <th *ngIf="!registerNo" scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of hubungiDokterList$ | async; let i = index">
-                        <td>{{ i + 1 }}</td>
-                        <td>{{ item.NAMA_DOKTER }}</td>
-                        <td>{{ item.TGL_APT }}</td>
-                        <td>{{ item.KEPERLUAN }}</td>
-                        <td *ngIf="!registerNo && step == 1" ><a style="margin-right: 10%;" (click)="editLokasi(item)" class="btn btn-sm btn-primary">
-                                <span style="color: #fff; cursor: pointer;" class="fa fa-edit"></span>
-                            </a>
-                            <a (click)="deleteLokasi(item.rl_id)" class="btn btn-sm btn-danger">
-                              <span style="color: #fff; cursor: pointer;" class="fa fa-trash"></span>
-                          </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div>
-          <ngx-pagination (getDataSource)="getRegisterLocationList($event)"></ngx-pagination>
-        </div>
+    <div>
+      <ngx-pagination (getDataSource)="getPenjadwalanList($event)"></ngx-pagination>
     </div>
+  </div>
 </div>
-<div class="modal fade" id="exampleModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Recipient:</label>
-              <input type="text" class="form-control" id="recipient-name">
-            </div>
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Message:</label>
-              <textarea class="form-control" id="message-text"></textarea>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Send message</button>
+<div class="modal fade bd-example-modal-lg" id="modalHubungiDokter" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered center" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Rekam Penjadwalan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <nb-card [nbSpinner]="loadingModal" nbSpinnerStatus="primary" nbSpinnerSize="giant"
+              nbSpinnerMessage="processing...">
+              <nb-card-body>
+                <form #hubungiDokterForm="ngForm">
+                  <div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="label">Tgl. Perjanjian</label>
+                          <span class="field-validation-valid text-danger"> *</span>
+                          <input required type="date" nbInput fullWidth name="tglperjanjian"
+                            placeholder="Tanggal Perjanjian..." [(ngModel)]="penjadwalan.TglPerjanjian">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="label">Waktu Mulai</label>
+                          <span class="field-validation-valid text-danger"> *</span>
+                          <input type="time" nbInput fullWidth name="mulai" placeholder="Waktu Mulai..."
+                            [(ngModel)]="penjadwalan.JamMulai">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="label">Waktu Selesai</label>
+                          <span class="field-validation-valid text-danger"> *</span>
+                          <input type="time" nbInput fullWidth name="selesai" placeholder="Waktu Selesai..."
+                            [(ngModel)]="penjadwalan.JamSelesai">
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="label">Keperluan</label>
+                          <span class="field-validation-valid text-danger"> *</span>
+                          <textarea required  rows="2" [(ngModel)]="penjadwalan.Keperluan"
+                            name="keperluan" nbInput fullWidth id="keperluan" placeholder="Keperluan..."></textarea>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="label">Hasil Pemeriksaan</label>
+                          <span class="field-validation-valid text-danger"> *</span>
+                          <textarea required rows="3" [(ngModel)]="penjadwalan.HasilPemeriksaan"
+                            name="hasil" nbInput fullWidth id="hasil" placeholder="Hasil Pemeriksaan..."></textarea>
+                        </div>
+                      </div> -->
+                    </div>
+                  </div>
+                </form>
+              </nb-card-body>
+              <nb-card-footer>
+                <button nbButton matRipple status="success"
+                  (click)="saveHubungiDokter()">
+                  <nb-icon [disabled]="!hubungiDokterForm.form.valid" icon="save-outline"></nb-icon>Simpan
+                </button>
+                <button style="margin-left: 10px;" *ngIf="penjadwalan.IdJadwal" nbButton matRipple status="danger"
+                  (click)="delete()">
+                  <nb-icon icon="trash-2-outline"></nb-icon>Hapus
+                </button>
+              </nb-card-footer>
+            </nb-card>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-
+</div>

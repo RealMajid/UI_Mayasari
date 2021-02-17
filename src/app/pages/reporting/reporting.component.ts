@@ -89,7 +89,7 @@ export class ReportingComponent implements OnInit, OnDestroy {
         reportUrl = "/RptPemeriksaanPasien"
         break;
       case 4:
-        reportUrl = "/RptKinerjaDokter  "
+        reportUrl = "/RptKinerjaDokter"
         break;
       default:
         break;

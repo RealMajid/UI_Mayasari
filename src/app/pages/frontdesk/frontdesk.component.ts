@@ -42,6 +42,7 @@ export class FrontdeskComponent implements OnInit {
   search: any = "";
   sort: any = ""  ;
   jenisPasien: any;
+  status: any;
 
   constructor(private refService: RefService, private alertService: AlertService, private windowService: NbWindowService, protected dateService: NbDateService<Date>, private headerService: HeaderService, private router: Router, private route: ActivatedRoute, private http: HttpClient, public toastService: NbToastrService,) {
     this.dFrom = Globals.formatDate(dateService.addMonth(this.monthStart, -1));
@@ -118,7 +119,7 @@ export class FrontdeskComponent implements OnInit {
     })
   }
 
-  editRegisterKasus(regNo: any) {
+  editRegisterKasus(regNo: any, status: any) {
     this.loadingModal = true;
     this.http.get(Globals.apiService + `/RegisterKasus?regNo=${regNo}`)
     .pipe(takeUntil(this.unsubscribe$))
@@ -126,6 +127,8 @@ export class FrontdeskComponent implements OnInit {
       this.registerKasus = data;
       this.registerKasus.TglLahir = Globals.formatDate(new Date(this.registerKasus.TglLahir));
       this.registerKasus.RegNo = regNo;
+      this.jenisPasien = '1';
+      this.status = status.toLowerCase();
       this.loadingModal = false;
     }, err => {
       this.toastConfig.status = Globals.getToastStatus(Globals.toastStatus.Danger);
